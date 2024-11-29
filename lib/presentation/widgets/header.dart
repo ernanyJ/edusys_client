@@ -9,37 +9,32 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
+      title: const Text(
         systemName,
-        style: Theme.of(context).textTheme.titleLarge,
       ),
       actions: [
         TextButton(
           onPressed: () {},
           child: const Text(
             'Dashboard',
-            style: TextStyle(color: Colors.black),
           ),
         ),
         TextButton(
           onPressed: () {},
           child: const Text(
             'Students',
-            style: TextStyle(color: Colors.black),
           ),
         ),
         TextButton(
           onPressed: () {},
           child: const Text(
             'Billing',
-            style: TextStyle(color: Colors.black),
           ),
         ),
         TextButton(
           onPressed: () {},
           child: const Text(
             'Reports',
-            style: TextStyle(color: Colors.black),
           ),
         ),
         SizedBox(width: MediaQuery.of(context).size.width * 0.6),
