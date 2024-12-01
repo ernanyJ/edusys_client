@@ -14,7 +14,6 @@ class GuardianModel {
   final String? secondPhone;
   final String email;
   final AddressModel address;
-  final List<int> students; // IDs dos alunos relacionados
 
   GuardianModel({
     required this.id,
@@ -28,7 +27,6 @@ class GuardianModel {
     this.secondPhone,
     required this.email,
     required this.address,
-    required this.students,
   });
 
   // Método para converter de JSON para GuardianModel
@@ -45,7 +43,6 @@ class GuardianModel {
       secondPhone: json['secondPhone'] as String?,
       email: json['email'] as String,
       address: AddressModel.fromJson(json['address'] as Map<String, dynamic>),
-      students: List<int>.from(json['students']),
     );
   }
 
@@ -63,7 +60,6 @@ class GuardianModel {
       'secondPhone': secondPhone,
       'email': email,
       'address': address.toJson(),
-      'students': students,
     };
   }
 }

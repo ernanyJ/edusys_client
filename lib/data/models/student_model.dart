@@ -1,3 +1,4 @@
+import 'package:edusys_client/data/models/class_group_model.dart';
 import 'package:edusys_client/data/models/guardian_model.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
 
@@ -12,7 +13,7 @@ class StudentModel {
   final Sex sex;
   final String enrollment;
   final AddressModel address;
-  final int classGroupId;
+  final ClassGroupModel classGroup;
   final List<GuardianModel> guardians;
 
   StudentModel({
@@ -24,7 +25,7 @@ class StudentModel {
     required this.sex,
     required this.enrollment,
     required this.address,
-    required this.classGroupId,
+    required this.classGroup,
     required this.guardians,
   });
 
@@ -40,8 +41,11 @@ class StudentModel {
           .firstWhere((e) => e.toString().split('.').last == json['sex']),
       enrollment: json['enrollment'] as String,
       address: AddressModel.fromJson(json['address'] as Map<String, dynamic>),
-      classGroupId: json['classGroupId'] as int,
-      guardians: List<GuardianModel>.from(json['guardians']),
+      classGroup:
+          ClassGroupModel.fromJson(json['classGroup'] as Map<String, dynamic>),
+      guardians: (json['guardians'] as List)
+          .map((item) => GuardianModel.fromJson(item as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -56,7 +60,7 @@ class StudentModel {
       'sex': sex.toString().split('.').last,
       'enrollment': enrollment,
       'address': address.toJson(),
-      'classGroupId': classGroupId,
+      'classGroupId': classGroup,
       'guardians': guardians,
     };
   }
