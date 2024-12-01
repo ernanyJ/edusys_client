@@ -1,5 +1,6 @@
 import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MainHeader extends StatelessWidget implements PreferredSizeWidget {
   const MainHeader({
@@ -9,35 +10,39 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text(
+      title: Text(
         systemName,
+        style: Theme.of(context).textTheme.titleLarge,
       ),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: () => {
+            context.go('/'),
+          },
+          style: Theme.of(context).textButtonTheme.style,
           child: const Text(
             'Dashboard',
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () => context.go('/students'),
           child: const Text(
-            'Students',
+            'Estudantes',
           ),
         ),
         TextButton(
           onPressed: () {},
           child: const Text(
-            'Billing',
+            'Mensalidades',
           ),
         ),
         TextButton(
           onPressed: () {},
           child: const Text(
-            'Reports',
+            'Relatórios',
           ),
         ),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.6),
+        SizedBox(width: MediaQuery.of(context).size.width * 0.55),
         IconButton(
           icon: const Icon(Icons.notifications),
           onPressed: () {},
