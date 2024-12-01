@@ -1,6 +1,6 @@
-import 'package:edusys_client/presentation/page/home_page.dart';
 import 'package:edusys_client/util/consts.dart';
-import 'package:edusys_client/util/theme.dart';
+import 'package:edusys_client/util/router.dart';
+import 'package:edusys_client/util/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,12 +12,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
       title: systemName,
-      theme: ThemePreferences.appTheme,
-      home: const HomePage(),
+      theme: ThemePreferences.lightTheme,
     );
   }
 }
