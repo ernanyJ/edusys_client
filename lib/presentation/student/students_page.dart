@@ -1,11 +1,14 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:edusys_client/presentation/student/state/student_page_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StudentsPage extends StatelessWidget {
   const StudentsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<StudentPageState>(context);
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(24.0),
@@ -32,19 +35,19 @@ class StudentsPage extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
-           DataColumn(
+          DataColumn(
             label: Text(
               'CPF',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
-           DataColumn(
+          DataColumn(
             label: Text(
               'Responsável',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
-           DataColumn(
+          DataColumn(
             label: Text(
               'Matrícula',
               style: Theme.of(context).textTheme.bodyMedium,
