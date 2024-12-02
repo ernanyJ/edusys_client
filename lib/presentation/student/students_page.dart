@@ -1,92 +1,134 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
+import 'package:edusys_client/util/hover_builder.dart';
+import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class StudentsPage extends StatelessWidget {
+class StudentsPage extends StatefulWidget {
   const StudentsPage({super.key});
 
+  @override
+  State<StudentsPage> createState() => _StudentsPageState();
+}
+
+class _StudentsPageState extends State<StudentsPage> {
   @override
   Widget build(BuildContext context) {
     final state = Provider.of<StudentPageState>(context);
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(24.0),
-      child: DataTable2(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey, width: 1.4),
-        ),
-        columns: [
-          DataColumn(
-            label: Text(
-              'Nome',
-              style: Theme.of(context).textTheme.bodyMedium,
+      child: state.students.isEmpty
+          ? const Center(
+              child: Text('Parece que não tem nada aqui...'),
+            )
+          : Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => state.loadStudents(),
+                      child: const Text('Recarregar lista'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                Expanded(
+                  child: state.loadingState == LoadingState.LOADING
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : DataTable2(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.4),
+                          ),
+                          columns: [
+                            DataColumn(
+                              label: Text(
+                                'Nome',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Idade',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Mensalidade atual',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'CPF',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Responsável',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Matrícula',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                          rows: [
+                            ...state.students.map((student) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    HoverBuilder(
+                                      builder: (bool isHovered) {
+                                        return Text(
+                                          student.name,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: isHovered
+                                                ? Colors.blue
+                                                : Colors.black,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  DataCell(Text(
+                                      state.calculateAge(student.birthDate))),
+                                  DataCell(Text(student.sex.value)),
+                                  DataCell(Text(student.cpf)),
+                                  DataCell(
+                                    HoverBuilder(
+                                      builder: (bool isHovered) {
+                                        return Text(
+                                          student.guardians.first.name,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: isHovered
+                                                ? Colors.blue
+                                                : Colors.black,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  DataCell(Text(student.enrollment)),
+                                ],
+                              );
+                            }),
+                          ],
+                        ),
+                ),
+              ],
             ),
-          ),
-          DataColumn(
-            label: Text(
-              'Idade',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Mensalidade atual',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'CPF',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Responsável',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Matrícula',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ],
-        rows: const [
-          DataRow(
-            cells: [
-              DataCell(Text('João')),
-              DataCell(Text('12')),
-              DataCell(Text('R\$ 100,00')),
-              DataCell(Text('123.456.789-00')),
-              DataCell(Text('Maria')),
-              DataCell(Text('123456')),
-            ],
-          ),
-          DataRow(
-            cells: [
-              DataCell(Text('Maria')),
-              DataCell(Text('10')),
-              DataCell(Text('R\$ 80,00')),
-              DataCell(Text('987.654.321-00')),
-              DataCell(Text('João')),
-              DataCell(Text('654321')),
-            ],
-          ),
-          DataRow(
-            cells: [
-              DataCell(Text('José')),
-              DataCell(Text('11')),
-              DataCell(Text('R\$ 90,00')),
-              DataCell(Text('456.789.123-00')),
-              DataCell(Text('Maria')),
-              DataCell(Text('789123')),
-            ],
-          ),
-        ],
-      ),
     ));
   }
 }

@@ -1,5 +1,5 @@
-import 'package:edusys_client/data/datasources/student_datasource.dart';
-import 'package:edusys_client/data/models/student_model.dart';
+import 'package:edusys_client/data/repositories/student_repository_impl.dart';
+import 'package:edusys_client/domain/entities/student_entity.dart';
 import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +11,38 @@ class StudentPageState extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<StudentEntity> _students = [];
+  List<StudentEntity> get students => [..._students];
+  set students(List<StudentEntity> value) {
+    _students = value;
+    notifyListeners();
+  }
+
   void loadStudents() async {
-    StudentDatasource data = StudentDatasource();
-    List<StudentModel> students = await data.getStudents();
-    print(students.map((student) => student.name).toList());
+    if (students.isNotEmpty) {
+      _loadingState = LoadingState.LOADING;
+      notifyListeners();
+      _loadingState = LoadingState.LOADED;
+      notifyListeners();
+      return;
+    }
+
+    StudentRepositoryImpl repository = StudentRepositoryImpl();
+    _loadingState = LoadingState.LOADING;
+    notifyListeners();
+
+    repository.getAllStudents().then((value) => students = value);
+    _loadingState = LoadingState.LOADED;
+    notifyListeners();
+  }
+
+  String calculateAge(DateTime birth) {
+    DateTime now = DateTime.now();
+    int age = now.year - birth.year;
+    if (now.month < birth.month ||
+        (now.month == birth.month && now.day < birth.day)) {
+      age--;
+    }
+    return age.toString();
   }
 }

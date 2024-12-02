@@ -1,1 +1,9 @@
-enum Sex { MALE, FEMALE, OTHERS }
+enum Sex {
+  MALE('H'),
+  FEMALE('M'),
+  OTHERS('O');
+
+  final String value;
+
+  const Sex(this.value);
+}

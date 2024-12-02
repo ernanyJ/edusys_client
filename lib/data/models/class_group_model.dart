@@ -1,4 +1,3 @@
-import 'package:edusys_client/data/models/student_model.dart';
 import 'package:edusys_client/enums/time_period_enum.dart';
 
 class ClassGroupModel {
