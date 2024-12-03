@@ -1,3 +1,4 @@
+import 'package:edusys_client/presentation/configuration/configuration_page.dart';
 import 'package:edusys_client/presentation/home_page.dart';
 import 'package:edusys_client/presentation/student/students_page.dart';
 import 'package:edusys_client/presentation/widgets/view_page.dart';
@@ -18,6 +19,9 @@ final appRouter = GoRouter(
           path: '/students',
           builder: (context, state) => const StudentsPage(),
         ),
+        GoRoute(path: '/configurations', 
+        builder: (context, state) => const ConfigurationPage() 
+        )
       ],
     )
   ],

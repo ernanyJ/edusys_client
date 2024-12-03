@@ -25,6 +25,7 @@ class StudentConverter extends Converter<StudentModel, StudentEntity> {
       classGroup: classGroupConverter.convert(input.classGroup),
       guardians:
           input.guardians.map((e) => guardianConverter.convert(e)).toList(),
+      currentMonthPaid: input.currentMonthPaid,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:edusys_client/data/models/class_group_model.dart';
 import 'package:edusys_client/data/models/guardian_model.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
+import 'package:edusys_client/enums/tuition_fee_status.dart';
 
 import 'address_model.dart';
 
@@ -15,6 +16,7 @@ class StudentModel {
   final AddressModel address;
   final ClassGroupModel classGroup;
   final List<GuardianModel> guardians;
+  final TuitionFeeStatus? currentMonthPaid;
 
   StudentModel({
     required this.id,
@@ -27,26 +29,30 @@ class StudentModel {
     required this.address,
     required this.classGroup,
     required this.guardians,
+    required this.currentMonthPaid,
   });
 
   // Método para converter de JSON para StudentModel
   factory StudentModel.fromJson(Map<String, dynamic> json) {
     return StudentModel(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      birthDate: DateTime.parse(json['birthDate'] as String),
-      cpf: json['cpf'] as String,
-      rg: json['rg'] as String,
-      sex: Sex.values
-          .firstWhere((e) => e.toString().split('.').last == json['sex']),
-      enrollment: json['enrollment'] as String,
-      address: AddressModel.fromJson(json['address'] as Map<String, dynamic>),
-      classGroup:
-          ClassGroupModel.fromJson(json['classGroup'] as Map<String, dynamic>),
-      guardians: (json['guardians'] as List)
-          .map((item) => GuardianModel.fromJson(item as Map<String, dynamic>))
-          .toList(),
-    );
+        id: json['id'] as int,
+        name: json['name'] as String,
+        birthDate: DateTime.parse(json['birthDate'] as String),
+        cpf: json['cpf'] as String,
+        rg: json['rg'] as String,
+        sex: Sex.values
+            .firstWhere((e) => e.toString().split('.').last == json['sex']),
+        enrollment: json['enrollment'] as String,
+        address: AddressModel.fromJson(json['address'] as Map<String, dynamic>),
+        classGroup: ClassGroupModel.fromJson(
+            json['classGroup'] as Map<String, dynamic>),
+        guardians: (json['guardians'] as List)
+            .map((item) => GuardianModel.fromJson(item as Map<String, dynamic>))
+            .toList(),
+        currentMonthPaid: json['currentMonthPaid'] != null
+            ? TuitionFeeStatus.values.firstWhere(
+                (e) => e.toString().split('.').last == json['currentMonthPaid'])
+            : null);
   }
 
   // Método para converter StudentModel para JSON
@@ -62,6 +68,7 @@ class StudentModel {
       'address': address.toJson(),
       'classGroupId': classGroup,
       'guardians': guardians,
+      'currentMonthPaid': currentMonthPaid,
     };
   }
 }

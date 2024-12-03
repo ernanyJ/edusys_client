@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
+import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/hover_builder.dart';
 import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,13 @@ class StudentsPage extends StatefulWidget {
 }
 
 class _StudentsPageState extends State<StudentsPage> {
+  var _isAscName = true;
+  var _isAscClassGroup = true;
+  var _isAscCurrentMonthPaid = true;
+  var _isAscCpf = true;
+  var _isAscGuardian = true;
+  var _isAscEnrollment = true;
+
   @override
   Widget build(BuildContext context) {
     final state = Provider.of<StudentPageState>(context);
@@ -20,8 +28,8 @@ class _StudentsPageState extends State<StudentsPage> {
         body: Padding(
       padding: const EdgeInsets.all(24.0),
       child: state.students.isEmpty
-          ? const Center(
-              child: Text('Parece que não tem nada aqui...'),
+          ? Center(
+              child: CircularProgressIndicator(color: primaryColor),
             )
           : Column(
               children: [
@@ -29,7 +37,22 @@ class _StudentsPageState extends State<StudentsPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () => state.loadStudents(),
+                      onPressed: () {},
+                      child: Row(
+                        children: [
+                          const Text('Adicionar'),
+                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.add,
+                            color: primaryColor,
+                            size: 25,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () => state.reloadStudents(context),
                       child: const Text('Recarregar lista'),
                     ),
                   ],
@@ -46,36 +69,66 @@ class _StudentsPageState extends State<StudentsPage> {
                           ),
                           columns: [
                             DataColumn(
+                              tooltip: 'Ordenar por nome',
+                              onSort: (columnIndex, ascending) {
+                                state.orderBy(_isAscName, columnIndex);
+                                _isAscName = !_isAscName;
+                              },
                               label: Text(
                                 'Nome',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                             DataColumn(
+                              tooltip: 'Ordenar por turma',
+                              onSort: (columnIndex, ascending) {
+                                state.orderBy(_isAscClassGroup, columnIndex);
+                                _isAscClassGroup = !_isAscClassGroup;
+                              },
                               label: Text(
-                                'Idade',
+                                'Turma',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                             DataColumn(
+                              onSort: (columnIndex, ascending) {
+                                state.orderBy(
+                                    _isAscCurrentMonthPaid, columnIndex);
+                                _isAscCurrentMonthPaid =
+                                    !_isAscCurrentMonthPaid;
+                              },
                               label: Text(
-                                'Mensalidade atual',
+                                'Mensalidade atual (${DateTime.now().month}/${(DateTime.now().year) - 2000})',
+                                softWrap: true,
                                 style: Theme.of(context).textTheme.bodyMedium,
+                                textAlign: TextAlign.justify,
                               ),
                             ),
                             DataColumn(
+                              onSort: (columnIndex, ascending) {
+                                state.orderBy(_isAscCpf, columnIndex);
+                                _isAscCpf = !_isAscCpf;
+                              },
                               label: Text(
                                 'CPF',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                             DataColumn(
+                              onSort: (columnIndex, ascending) {
+                                state.orderBy(_isAscGuardian, columnIndex);
+                                _isAscGuardian = !_isAscGuardian;
+                              },
                               label: Text(
                                 'Responsável',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                             DataColumn(
+                              onSort: (columnIndex, ascending) {
+                                state.orderBy(_isAscEnrollment, columnIndex);
+                                _isAscEnrollment = !_isAscEnrollment;
+                              },
                               label: Text(
                                 'Matrícula',
                                 style: Theme.of(context).textTheme.bodyMedium,
@@ -101,9 +154,21 @@ class _StudentsPageState extends State<StudentsPage> {
                                       },
                                     ),
                                   ),
+                                  DataCell(Text(student.classGroup.room)),
                                   DataCell(Text(
-                                      state.calculateAge(student.birthDate))),
-                                  DataCell(Text(student.sex.value)),
+                                    student.currentMonthPaid?.value ??
+                                        'Não possui',
+                                    style: TextStyle(
+                                        color: student
+                                                    .currentMonthPaid?.value ==
+                                                'Pendente'
+                                            ? const Color.fromARGB(
+                                                255, 202, 129, 1)
+                                            : student.currentMonthPaid?.value ==
+                                                    'Atrasada'
+                                                ? Colors.red
+                                                : Colors.black),
+                                  )),
                                   DataCell(Text(student.cpf)),
                                   DataCell(
                                     HoverBuilder(

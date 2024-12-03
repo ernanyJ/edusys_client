@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:edusys_client/core/config/config_state.dart';
 
 class BaseDatasource {
   final Dio dio;
@@ -6,7 +7,7 @@ class BaseDatasource {
   BaseDatasource()
       : dio = Dio(
           BaseOptions(
-            baseUrl: 'http://192.168.100.59:8080', // Substitua pela URL da sua API
+            baseUrl: ConfigState.apiAddressController.text, // Substitua pela URL da sua API
             connectTimeout: const Duration(seconds: 10),
             receiveTimeout: const Duration(seconds: 10),
             headers: {'Content-Type': 'application/json'},

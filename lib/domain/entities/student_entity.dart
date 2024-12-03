@@ -2,6 +2,7 @@ import 'package:edusys_client/domain/entities/address_entity.dart';
 import 'package:edusys_client/domain/entities/class_group_entity.dart';
 import 'package:edusys_client/domain/entities/guardian_entity.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
+import 'package:edusys_client/enums/tuition_fee_status.dart';
 
 class StudentEntity {
   final int id;
@@ -14,6 +15,7 @@ class StudentEntity {
   final AddressEntity address;
   final ClassGroupEntity classGroup;
   final List<GuardianEntity> guardians;
+  final TuitionFeeStatus? currentMonthPaid;
 
   StudentEntity({
     required this.id,
@@ -26,5 +28,6 @@ class StudentEntity {
     required this.address,
     required this.classGroup,
     required this.guardians,
+    required this.currentMonthPaid,
   });
 }

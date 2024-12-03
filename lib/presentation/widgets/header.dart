@@ -29,7 +29,7 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
         TextButton(
           onPressed: () {
-            state.loadStudents();
+            state.loadStudents(context);
             context.go('/students');
           },
           child: const Text(
@@ -55,7 +55,7 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
         IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () {},
+          onPressed: () => context.go('/configurations'),
         ),
       ],
     );
