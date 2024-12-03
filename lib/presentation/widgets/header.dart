@@ -13,11 +13,13 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final state = Provider.of<StudentPageState>(context);
     return AppBar(
-      title: Text(
-        systemName,
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
       actions: [
+        const SizedBox(width: 20),
+        Text(
+          systemName,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(width: 20),
         TextButton(
           onPressed: () => {
             context.go('/'),
@@ -48,7 +50,7 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
             'Relatórios',
           ),
         ),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.55),
+        const Spacer(),
         IconButton(
           icon: const Icon(Icons.notifications),
           onPressed: () {},
