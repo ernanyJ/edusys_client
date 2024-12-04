@@ -8,34 +8,46 @@ class TextThemePreferences {
         fontSize: 24,
         fontWeight: FontWeight.bold,
         color: primaryColor,  
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter'
       ),
       titleMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: primaryColor,  
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter'
       ),
       titleSmall: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
         color: primaryColor,  
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter'
       ),
       bodyLarge: const TextStyle(
         fontSize: 18,
         color: Colors.black,  
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter'
       ),
       bodyMedium: const TextStyle(
         fontSize: 16,
         color: Colors.black,  
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter'
       ),
       bodySmall: const TextStyle(
         fontSize: 14,
         color: Colors.black,  
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter'
+      ),
+      displaySmall:  const TextStyle(
+        fontSize: 30,
+        color: Colors.black,  
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Inter'
+      ),
+       labelSmall:  const TextStyle(
+        fontSize: 15,
+        color: Colors.white,  
+        fontWeight: FontWeight.w600,
+        fontFamily: 'Inter'
       ),
     );
     

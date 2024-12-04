@@ -71,6 +71,17 @@ class _StudentsPageState extends State<StudentsPage> {
                             ),
                             columns: [
                               DataColumn(
+                                tooltip: 'Ordenar por ID',
+                                onSort: (columnIndex, ascending) {
+                                  state.orderBy(_isAscName, columnIndex);
+                                  _isAscName = !_isAscName;
+                                },
+                                label: Text(
+                                  'ID',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ),
+                              DataColumn(
                                 tooltip: 'Ordenar por nome',
                                 onSort: (columnIndex, ascending) {
                                   state.orderBy(_isAscName, columnIndex);
@@ -93,6 +104,7 @@ class _StudentsPageState extends State<StudentsPage> {
                                 ),
                               ),
                               DataColumn(
+                                tooltip: 'Ordenar por mensalidaed',
                                 onSort: (columnIndex, ascending) {
                                   state.orderBy(
                                       _isAscCurrentMonthPaid, columnIndex);
@@ -100,13 +112,14 @@ class _StudentsPageState extends State<StudentsPage> {
                                       !_isAscCurrentMonthPaid;
                                 },
                                 label: Text(
-                                  'Mensalidade atual (${DateTime.now().month}/${(DateTime.now().year) - 2000})',
+                                  'Mensalidade\natual (${DateTime.now().month}/${(DateTime.now().year) - 2000})',
                                   softWrap: true,
                                   style: Theme.of(context).textTheme.bodyMedium,
                                   textAlign: TextAlign.justify,
                                 ),
                               ),
                               DataColumn(
+                                tooltip: 'Ordenar por CPF',
                                 onSort: (columnIndex, ascending) {
                                   state.orderBy(_isAscCpf, columnIndex);
                                   _isAscCpf = !_isAscCpf;
@@ -117,6 +130,7 @@ class _StudentsPageState extends State<StudentsPage> {
                                 ),
                               ),
                               DataColumn(
+                                tooltip: 'Ordenar por responsável',
                                 onSort: (columnIndex, ascending) {
                                   state.orderBy(_isAscGuardian, columnIndex);
                                   _isAscGuardian = !_isAscGuardian;
@@ -127,6 +141,7 @@ class _StudentsPageState extends State<StudentsPage> {
                                 ),
                               ),
                               DataColumn(
+                                tooltip: 'Ordenar por matrícula',
                                 onSort: (columnIndex, ascending) {
                                   state.orderBy(_isAscEnrollment, columnIndex);
                                   _isAscEnrollment = !_isAscEnrollment;
@@ -141,29 +156,28 @@ class _StudentsPageState extends State<StudentsPage> {
                               ...state.students.map((student) {
                                 return DataRow(
                                   cells: [
+                                    DataCell(Text(student.id.toString())),
                                     DataCell(
-                                      GestureDetector(
-                                        onTap: () => {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return StudentsDetailsDialog(student: student);
-                                            },
-                                          )
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              StudentsDetailsDialog(
+                                                  student: student),
+                                        );
+                                      },
+                                      HoverBuilder(
+                                        builder: (bool isHovered) {
+                                          return Text(
+                                            student.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: isHovered
+                                                  ? Colors.blue
+                                                  : Colors.black,
+                                            ),
+                                          );
                                         },
-                                        child: HoverBuilder(
-                                          builder: (bool isHovered) {
-                                            return Text(
-                                              student.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: isHovered
-                                                    ? Colors.blue
-                                                    : Colors.black,
-                                              ),
-                                            );
-                                          },
-                                        ),
                                       ),
                                     ),
                                     DataCell(Text(student.classGroup.room)),

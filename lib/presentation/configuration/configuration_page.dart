@@ -10,7 +10,7 @@ class ConfigurationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(defaultPad),
+        padding: const EdgeInsets.all(defaultMainPad),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -21,17 +21,17 @@ class ConfigurationPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: defaultPad),
+                const SizedBox(height: defaultMainPad),
                 MyTextField(
                   label: 'Nome da instituição',
                   controller: ConfigState.schoolNameController,
                 ),
-                const SizedBox(height: defaultPad),
+                const SizedBox(height: defaultMainPad),
                 MyTextField(
                   label: 'Endereço',
                   controller: ConfigState.addressController,
                 ),
-                const SizedBox(height: defaultPad),
+                const SizedBox(height: defaultMainPad),
                 MyTextField(
                   label: 'Endereço API',
                   controller: ConfigState.apiAddressController,
