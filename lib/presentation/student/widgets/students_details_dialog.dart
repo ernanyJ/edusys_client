@@ -115,7 +115,7 @@ class EditButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
       onPressed: () => Navigator.of(context).pop(),
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.all<Color>(primaryColor),

@@ -7,11 +7,13 @@ class MyTextField extends StatelessWidget {
       {super.key,
       required this.label,
       required this.controller,
-      this.inputFormatters});
+      this.inputFormatters,
+      this.helpTip});
 
   final String label;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final List<TextInputFormatter>? inputFormatters;
+  final Widget? helpTip;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +22,18 @@ class MyTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: TextStyle(color: neutralColor),
+          Row(
+            children: [
+              Text(
+                label,
+                style: TextStyle(color: neutralColor),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              SizedBox(
+                  child: helpTip ?? const SizedBox.shrink()),
+            ],
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
