@@ -9,7 +9,7 @@ class TuitionFeeModel {
   final double discountPercentage;
   final double baseValue;
   final double finalValue;
-  final DateTime paymentDate;
+  final DateTime? paymentDate;
   final TuitionFeeStatus paymentStatus;
   final StudentModel student;
   final GuardianModel guardian;
@@ -30,12 +30,12 @@ class TuitionFeeModel {
   factory TuitionFeeModel.fromJson(Map<String, dynamic> json) {
     return TuitionFeeModel(
       id: json['id'],
-      dueDate: DateTime.parse(json['due_date']),
-      discountPercentage: json['discount_percentage'],
-      baseValue: json['base_value'],
-      finalValue: json['final_value'],
-      paymentDate: DateTime.parse(json['payment_date']),
-      paymentStatus: TuitionFeeStatus.values[json['payment_status']],
+      dueDate: DateTime.parse(json['dueDate']),
+      discountPercentage: json['discountPercentage'],
+      baseValue: json['baseValue'],
+      finalValue: json['finalValue'],
+      paymentDate: DateTime.parse(json['paymentDate']),
+      paymentStatus: TuitionFeeStatus.values[json['paymentStatus']],
       student: StudentModel.fromJson(json['student']),
       guardian: GuardianModel.fromJson(json['guardian']),
       contract: ContractModel.fromJson(json['contract']),
@@ -49,7 +49,7 @@ class TuitionFeeModel {
       'discount_percentage': discountPercentage,
       'base_value': baseValue,
       'final_value': finalValue,
-      'payment_date': paymentDate.toIso8601String(),
+      'payment_date': paymentDate?.toIso8601String() ?? '',
       'payment_status': paymentStatus.index,
       'student': student.toJson(),
       'guardian': guardian.toJson(),

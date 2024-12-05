@@ -1,6 +1,8 @@
 import 'package:edusys_client/domain/entities/student_entity.dart';
+import 'package:edusys_client/presentation/student/state/fee_visualizer_state.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FeeVisualizer extends StatelessWidget {
   const FeeVisualizer({super.key, required this.student});
@@ -14,18 +16,24 @@ class FeeVisualizer extends StatelessWidget {
       width: double.maxFinite,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: const [
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
-          MonthFee(),
+        children: [
+          GestureDetector(
+            onTap: (){
+              Provider.of<FeeVisualizerState>(context, listen: false)
+                  .getTuitionFeesFromStudent(student.id);
+            },
+            child: MonthFee(),
+          ),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
+          const MonthFee(),
         ],
       ),
     );
@@ -41,12 +49,17 @@ class MonthFee extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Janeiro', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Colors.black)),
+        Text('Janeiro',
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall
+                ?.copyWith(color: Colors.black)),
         Padding(
           padding: const EdgeInsets.all(defaultInnerPad),
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.red[400], borderRadius: BorderRadius.circular(15)),
+                color: Colors.red[400],
+                borderRadius: BorderRadius.circular(15)),
             width: 100,
             height: 150,
             child: Center(

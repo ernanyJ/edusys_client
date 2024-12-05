@@ -1,4 +1,5 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:edusys_client/presentation/student/state/fee_visualizer_state.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
 import 'package:edusys_client/presentation/student/widgets/students_details_dialog.dart';
 import 'package:edusys_client/util/consts.dart';
