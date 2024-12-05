@@ -4,7 +4,7 @@ class ConfigEntity {
 
    String schoolName = 'Escola Girassol';
   String schoolAddress = 'Rua das Flores, 123';
-  String apiAddress = 'http://192.168.100.59:8080';
+  String apiAddress = 'http://192.168.1.7:8080';
 
   late TextEditingController schoolNameController;
   late TextEditingController schoolAddressController;
