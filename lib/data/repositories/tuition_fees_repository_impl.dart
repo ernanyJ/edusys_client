@@ -9,12 +9,9 @@ class TuitionFeesRepositoryImpl implements TuitionFeeRepository {
 
   @override
   Future<List<TuitionFeeEntity>> getTuitionFeesFromStudent(int id) async {
-    var list = await datasource
+    return await datasource
         .getTuitionFeesFromStudent(id)
         .then((e) => e.map((e) => inConverter.convert(e)).toList());
-
-    print(list);
-
-    return list;
+    
   }
 }

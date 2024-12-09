@@ -1,6 +1,6 @@
 import 'package:edusys_client/enums/sex_enum.dart';
 
-import 'address_model.dart';
+import 'address_model_in.dart';
 
 class GuardianModel {
   final int id;

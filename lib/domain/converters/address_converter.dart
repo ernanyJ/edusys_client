@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:edusys_client/data/models/address_model.dart';
+import 'package:edusys_client/data/models/in/address_model_in.dart';
 import 'package:edusys_client/domain/entities/address_entity.dart';
 
 class AddressConverter extends Converter<AddressModel, AddressEntity> {

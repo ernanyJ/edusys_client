@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:edusys_client/data/models/guardian_model.dart';
+import 'package:edusys_client/data/models/in/guardian_model_in.dart';
 import 'package:edusys_client/domain/converters/address_converter.dart';
 import 'package:edusys_client/domain/entities/guardian_entity.dart';
 

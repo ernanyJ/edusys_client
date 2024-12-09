@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:edusys_client/data/models/class_group_model.dart';
+import 'package:edusys_client/data/models/in/class_group_model_in.dart';
 import 'package:edusys_client/domain/entities/class_group_entity.dart';
 
 class ClassGroupConverter extends Converter<ClassGroupModel, ClassGroupEntity> {

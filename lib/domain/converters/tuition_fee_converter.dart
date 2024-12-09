@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:edusys_client/data/models/tuition_fee_model.dart';
+import 'package:edusys_client/data/models/in/tuition_fee_model_in.dart';
 import 'package:edusys_client/domain/converters/contract_converter.dart';
 import 'package:edusys_client/domain/converters/guardian_converter.dart';
 import 'package:edusys_client/domain/converters/student_converter.dart';
@@ -20,10 +20,7 @@ class TuitionFeeConverter extends Converter<TuitionFeeModel, TuitionFeeEntity> {
       baseValue: input.baseValue,
       finalValue: input.baseValue,
       paymentDate: input.paymentDate,
-      paymentStatus: input.paymentStatus,
-      student: studentConverter.convert(input.student),
-      guardian: guardianConverter.convert(input.guardian),
-      contract: contractConverter.convert(input.contract),
+      status: input.status,
     );
   }
 }

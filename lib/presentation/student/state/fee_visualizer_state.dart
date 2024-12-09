@@ -9,7 +9,6 @@ class FeeVisualizerState extends ChangeNotifier {
   final StudentEntity student;
 
   void init() {
-    print('aaaaaaa');
     getTuitionFeesFromStudent(student.id);
   }
 

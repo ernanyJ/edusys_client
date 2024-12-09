@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:edusys_client/data/models/contract_model.dart';
+import 'package:edusys_client/data/models/in/contract_model_in.dart';
 import 'package:edusys_client/domain/converters/guardian_converter.dart';
 import 'package:edusys_client/domain/converters/student_converter.dart';
 import 'package:edusys_client/domain/entities/contract_entity.dart';

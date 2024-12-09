@@ -1,9 +1,9 @@
-import 'package:edusys_client/data/models/class_group_model.dart';
-import 'package:edusys_client/data/models/guardian_model.dart';
+import 'package:edusys_client/data/models/in/class_group_model_in.dart';
+import 'package:edusys_client/data/models/in/guardian_model_in.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
 import 'package:edusys_client/enums/tuition_fee_status.dart';
 
-import 'address_model.dart';
+import 'address_model_in.dart';
 
 class StudentModel {
   final int id;

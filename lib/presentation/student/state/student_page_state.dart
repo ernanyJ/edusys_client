@@ -1,3 +1,4 @@
+import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/data/repositories/student_repository_impl.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
 import 'package:edusys_client/util/loading_state.dart';
@@ -98,5 +99,17 @@ class StudentPageState extends ChangeNotifier {
       default:
         break;
     }
+  }
+
+  void deleteStudent(int id, BuildContext context) {
+    repository.deleteStudent(id);
+    _students.removeWhere((element) => element.id == id);
+    Navigator.of(context).pop();
+    notifyListeners();
+  }
+
+  updateStudent(StudentEntity student) {
+    repository.updateStudent(student.id, StudentModelOut.fromEntity(student));
+    notifyListeners();
   }
 }

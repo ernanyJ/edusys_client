@@ -1,5 +1,5 @@
-import 'package:edusys_client/data/models/guardian_model.dart';
-import 'package:edusys_client/data/models/student_model.dart';
+import 'package:edusys_client/data/models/in/guardian_model_in.dart';
+import 'package:edusys_client/data/models/in/student_model_in.dart';
 import 'package:edusys_client/enums/contract_status_enum.dart';
 
 class ContractModel {

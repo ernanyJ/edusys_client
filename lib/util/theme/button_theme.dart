@@ -10,7 +10,7 @@ class ButtonThemePreferences {
         secondary: secondaryColor,
         onSecondary: secondaryColor,
         error: Colors.red,
-        onError: errorColor,
+        onError: dangerColor,
         surface: primaryColor,
         onSurface: primaryColor),
   );

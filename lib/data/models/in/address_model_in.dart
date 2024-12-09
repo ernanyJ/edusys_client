@@ -1,5 +1,5 @@
 class AddressModel {
-  final int id;
+  final int? id;
   final String street;
   final String city;
   final String state;

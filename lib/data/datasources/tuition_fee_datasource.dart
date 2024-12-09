@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:edusys_client/data/datasources/base_datasource.dart';
-import 'package:edusys_client/data/models/tuition_fee_model.dart';
+import 'package:edusys_client/data/models/in/tuition_fee_model_in.dart';
 
 class TuitionFeeDatasource extends BaseDatasource {
   Future<List<TuitionFeeModel>> getTuitionFeesFromStudent(int id) async {

@@ -45,7 +45,7 @@ class MyTextField extends StatelessWidget {
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: primaryColor)),
                 focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: errorColor)),
+                    borderSide: BorderSide(color: dangerColor)),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: neutralColor)),

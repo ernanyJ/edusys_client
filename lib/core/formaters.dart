@@ -13,3 +13,10 @@ String formatDate(DateTime? date) {
 String formatAddress(AddressEntity address){
   return '${address.street}, ${address.number} - ${address.neighborhood}, ${address.city} - ${address.state}';
 }
+
+String formatDay(DateTime date) {
+   if (date.month < 9) {
+    return '0${date.day}';
+  }
+  return '${date.day}';
+}
