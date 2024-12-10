@@ -41,7 +41,7 @@ class StudentModelOut {
   factory StudentModelOut.fromEntity(StudentEntity entity) {
     return StudentModelOut(
         name: entity.name,
-        birthDate: entity.birthDate.toString(),
+        birthDate: entity.birthDate.toIso8601String().split('T').first,
         cpf: entity.cpf,
         rg: entity.rg,
         sex: entity.sex,

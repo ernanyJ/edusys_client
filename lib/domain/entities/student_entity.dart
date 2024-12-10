@@ -30,4 +30,6 @@ class StudentEntity {
     required this.guardians,
     required this.currentMonthPaid,
   });
+
+
 }

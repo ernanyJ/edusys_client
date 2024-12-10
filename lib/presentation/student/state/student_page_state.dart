@@ -1,6 +1,7 @@
 import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/data/repositories/student_repository_impl.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
+import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
 
@@ -62,6 +63,11 @@ class StudentPageState extends ChangeNotifier {
 
   orderBy(bool ascending, int columnIndex) {
     switch (columnIndex) {
+      case 0:
+        _students.sort(
+            (a, b) => ascending ? a.id.compareTo(b.id) : b.id.compareTo(a.id));
+        notifyListeners();
+        break;
       case 1:
         _students.sort((a, b) =>
             ascending ? a.name.compareTo(b.name) : b.name.compareTo(a.name));
@@ -101,15 +107,29 @@ class StudentPageState extends ChangeNotifier {
     }
   }
 
-  void deleteStudent(int id, BuildContext context) {
-    repository.deleteStudent(id);
-    _students.removeWhere((element) => element.id == id);
-    Navigator.of(context).pop();
-    notifyListeners();
+  Future<void> deleteStudent(int id, BuildContext context) async {
+    try {
+      await repository.deleteStudent(id);
+      notifyListeners();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: dangerColor,
+            content: Text('Erro ao deletar estudante: $e'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 
-  updateStudent(StudentEntity student) {
-    repository.updateStudent(student.id, StudentModelOut.fromEntity(student));
+  updateStudent(int id, StudentModelOut student) async {
+    await repository.updateStudent(
+        id, student);
     notifyListeners();
   }
 }

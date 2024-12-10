@@ -1,8 +1,12 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/core/formaters.dart';
+import 'package:edusys_client/data/models/in/address_model_in.dart';
+import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
+import 'package:edusys_client/enums/sex_enum.dart';
 import 'package:edusys_client/presentation/student/state/fee_visualizer_state.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
+import 'package:edusys_client/presentation/student/state/student_text_controller.dart';
 import 'package:edusys_client/presentation/student/widgets/fee_visualizer.dart';
 import 'package:edusys_client/presentation/student/widgets/tuition_status_badge.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
@@ -22,9 +26,17 @@ class StudentsDetailsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var state = Provider.of<StudentPageState>(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => FeeVisualizerState(student)..init(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) => StudentTextController(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => FeeVisualizerState(student)..init(),
+        ),
+      ],
       child: Builder(builder: (context) {
+        final textController = Provider.of<StudentTextController>(context);
         return AlertDialog(
           icon: Row(
             children: [
@@ -55,18 +67,17 @@ class StudentsDetailsDialog extends StatelessWidget {
                       children: [
                         Form(
                           child: MyTextField(
-                            label: 'Nome',
-                            controller:
-                                TextEditingController(text: student.name),
-                          ),
+                              label: 'Nome',
+                              controller: textController.nameController
+                                ..text = student.name),
                         ),
                         const SizedBox(
                           width: defaultInnerPad,
                         ),
                         MyTextField(
                           label: 'Matricula',
-                          controller:
-                              TextEditingController(text: student.enrollment),
+                          controller: textController.enrollmentController
+                            ..text = student.enrollment,
                         ),
                       ],
                     ),
@@ -79,11 +90,13 @@ class StudentsDetailsDialog extends StatelessWidget {
                             CpfInputFormatter(),
                           ],
                           label: 'CPF',
-                          controller: TextEditingController(text: student.cpf),
+                          controller: textController.cpfController
+                            ..text = student.cpf,
                         ),
                         MyTextField(
                           label: 'RG',
-                          controller: TextEditingController(text: student.rg),
+                          controller: textController.rgController
+                            ..text = student.rg,
                         ),
                       ],
                     ),
@@ -101,8 +114,8 @@ class StudentsDetailsDialog extends StatelessWidget {
                             DataInputFormatter(),
                           ],
                           label: 'Data de nascimento',
-                          controller: TextEditingController(
-                              text: formatDate(student.birthDate)),
+                          controller: textController.birthController
+                            ..text = formatDate(student.birthDate),
                         ),
                       ],
                     ),
@@ -117,7 +130,31 @@ class StudentsDetailsDialog extends StatelessWidget {
                           student: student.name,
                         ),
                         const SizedBox(width: defaultMainPad),
-                        EditButton(() => state.updateStudent(student)),
+                        EditButton(
+                          () => state.updateStudent(
+                              student.id,
+                              StudentModelOut(
+                                  name: textController.nameController.text,
+                                  birthDate: formatDateForApi(textController.birthController.text),
+                                  cpf: textController.cpfController.text,
+                                  rg: textController.rgController.text,
+                                  sex: Sex.MALE,
+                                  enrollmentId:
+                                      textController.enrollmentController.text,
+                                  guardianId: {1},
+                                  classGroupId: 1,
+                                  address: AddressModel(
+                                      id: null,
+                                      street: 'street',
+                                      city: 'city',
+                                      state: 'ST',
+                                      zipCode: 'zipCode',
+                                      country: 'country',
+                                      number: 'number',
+                                      complement: 'complement',
+                                      neighborhood: 'neighborhood',
+                                      reference: 'reference'))),
+                        ),
                       ],
                     ),
                     const SizedBox(height: defaultMainPad),
@@ -130,6 +167,14 @@ class StudentsDetailsDialog extends StatelessWidget {
         );
       }),
     );
+  }
+  
+  String formatDateForApi(String text) {
+    final parts = text.split('/');
+    if (parts.length == 3) {
+      return '${parts[2]}-${parts[1]}-${parts[0]}';
+    }
+    return text;
   }
 }
 
