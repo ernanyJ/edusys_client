@@ -1,3 +1,5 @@
+import 'package:edusys_client/data/models/in/student_model_in.dart';
+import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/domain/entities/address_entity.dart';
 import 'package:edusys_client/domain/entities/class_group_entity.dart';
 import 'package:edusys_client/domain/entities/guardian_entity.dart';
@@ -30,6 +32,5 @@ class StudentEntity {
     required this.guardians,
     required this.currentMonthPaid,
   });
-
 
 }

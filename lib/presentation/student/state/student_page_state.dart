@@ -1,6 +1,8 @@
 import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/data/repositories/student_repository_impl.dart';
+import 'package:edusys_client/domain/entities/address_entity.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
+import 'package:edusys_client/exceptions/cpf_exception.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +115,16 @@ class StudentPageState extends ChangeNotifier {
       notifyListeners();
       if (context.mounted) {
         Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            content: const Text('Estudante deletado com sucesso!'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
       }
+      _students.remove(_students.firstWhere((element) => element.id == id));
+      notifyListeners();
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -127,9 +138,66 @@ class StudentPageState extends ChangeNotifier {
     }
   }
 
-  updateStudent(int id, StudentModelOut student) async {
-    await repository.updateStudent(
-        id, student);
+  updateStudent(int id, StudentModelOut student, BuildContext context) async {
+    var currentClass =
+        _students.firstWhere((element) => element.id == id).classGroup;
+    var currentGuardians =
+        _students.firstWhere((element) => element.id == id).guardians;
+    var currentMonthPaid =
+        _students.firstWhere((element) => element.id == id).currentMonthPaid;
+
+    var cacheStudent = StudentEntity(
+        id: id,
+        name: student.name,
+        birthDate: DateTime.parse(student.birthDate),
+        cpf: student.cpf,
+        rg: student.rg,
+        sex: student.sex,
+        enrollment: student.enrollmentId,
+        address: AddressEntity(
+            id: student.address.id,
+            street: student.address.street,
+            city: student.address.city,
+            state: student.address.state,
+            zipCode: student.address.zipCode,
+            country: student.address.country,
+            number: student.address.number,
+            complement: student.address.complement,
+            neighborhood: student.address.neighborhood,
+            reference: student.address.reference),
+        classGroup: currentClass,
+        guardians: currentGuardians,
+        currentMonthPaid: currentMonthPaid);
+
+    _students.remove(_students.firstWhere((element) => element.id == id));
+    _students.add(cacheStudent);
+    notifyListeners();
+    try {
+      await repository.updateStudent(id, student);
+    } on CpfException catch (e) {
+      notifyListeners();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: dangerColor,
+            content: Text('Erro ao atualizar estudante: ${e.message}'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: dangerColor,
+            content: Text('Erro ao atualizar estudante: $e'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+
+      rethrow;
+    }
     notifyListeners();
   }
 }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:edusys_client/data/datasources/base_datasource.dart';
 import 'package:edusys_client/data/models/in/student_model_in.dart';
 import 'package:edusys_client/data/models/out/student_model_out.dart';
+import 'package:edusys_client/exceptions/cpf_exception.dart';
 
 class StudentDatasource extends BaseDatasource {
   Future<List<StudentModel>> getStudents() async {
@@ -30,8 +31,10 @@ class StudentDatasource extends BaseDatasource {
       final response = await dio.put('/student/$id', data: student.toJson());
       return StudentModel.fromJson(response.data);
     } on DioException catch (e) {
-      // Trata erros de forma específica
-      throw Exception('Failed to update user: ${e.message}');
+      if (e.response.toString().contains('CPF')) {
+        throw CpfException('CPF Inválido.');
+      }
+      throw Exception('Failed to update user: ${e.response}');
     }
   }
 }
