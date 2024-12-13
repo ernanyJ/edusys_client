@@ -1,5 +1,7 @@
 import 'package:edusys_client/presentation/configuration/configuration_page.dart';
+import 'package:edusys_client/presentation/guardian/guardian_page.dart';
 import 'package:edusys_client/presentation/home_page.dart';
+import 'package:edusys_client/presentation/student/add_%20student/add_student_page.dart';
 import 'package:edusys_client/presentation/student/students_page.dart';
 import 'package:edusys_client/presentation/widgets/view_page.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +11,9 @@ final appRouter = GoRouter(
   initialLocation: '/students', // TODO: mudar depois de implementar homepage
   routes: [
     ShellRoute(
-      builder: (context, state, child) => ViewPage(child: child,),
+      builder: (context, state, child) => ViewPage(
+        child: child,
+      ),
       routes: [
         GoRoute(
           path: '/',
@@ -17,11 +21,21 @@ final appRouter = GoRouter(
         ),
         GoRoute(
           path: '/students',
+          routes: [
+            GoRoute(
+              path: 'add',
+              builder: (context, state) => const AddStudentPage(),
+            ),
+          ],
           builder: (context, state) => const StudentsPage(),
         ),
-        GoRoute(path: '/configurations', 
-        builder: (context, state) => const ConfigurationPage() 
-        )
+        GoRoute(
+          path: '/guardian',
+          builder: (context, state) => const GuardianPage(),
+        ),
+        GoRoute(
+            path: '/configurations',
+            builder: (context, state) => const ConfigurationPage())
       ],
     )
   ],

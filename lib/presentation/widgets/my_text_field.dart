@@ -10,7 +10,9 @@ class MyTextField extends StatelessWidget {
       this.inputFormatters,
       this.helpTip,
       this.enabled,
-      this.actions});
+      this.actions,
+      this.scaleFactor = 0.3, this.icon 
+      });
 
   final String label;
   final TextEditingController? controller;
@@ -18,6 +20,8 @@ class MyTextField extends StatelessWidget {
   final Widget? helpTip;
   final bool? enabled;
   final List<Widget>? actions;
+  final double scaleFactor;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -40,18 +44,16 @@ class MyTextField extends StatelessWidget {
             ],
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.3,
+            width: MediaQuery.of(context).size.width * scaleFactor,
             child: TextField(
+              
+              cursorColor: primaryColor,
               keyboardType: TextInputType.number,
-              onChanged: (value) {
-                if (!isValidCPF(value)) {
-                  // Show error message or handle invalid CPF
-                }
-              },
               enabled: enabled,
               inputFormatters: inputFormatters,
               controller: controller,
               decoration: InputDecoration(
+                prefixIcon: icon,
                 focusColor: primaryColor,
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: primaryColor)),
@@ -61,7 +63,9 @@ class MyTextField extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: neutralColor)),
               ),
+              
             ),
+            
           ),
         ],
       ),
@@ -69,34 +73,4 @@ class MyTextField extends StatelessWidget {
   }
 
   // Implement CPF validation
-  bool isValidCPF(String value) {
-    // Remove any non-numeric characters
-    value = value.replaceAll(RegExp(r'\D'), '');
-
-    // CPF must be 11 digits long
-    if (value.length != 11) return false;
-
-    // Check for known invalid CPFs
-    if (RegExp(r'^(\d)\1*$').hasMatch(value)) return false;
-
-    // Validate first digit
-    int sum = 0;
-    for (int i = 0; i < 9; i++) {
-      sum += int.parse(value[i]) * (10 - i);
-    }
-    int firstDigit = (sum * 10) % 11;
-    if (firstDigit == 10) firstDigit = 0;
-    if (firstDigit != int.parse(value[9])) return false;
-
-    // Validate second digit
-    sum = 0;
-    for (int i = 0; i < 10; i++) {
-      sum += int.parse(value[i]) * (11 - i);
-    }
-    int secondDigit = (sum * 10) % 11;
-    if (secondDigit == 10) secondDigit = 0;
-    if (secondDigit != int.parse(value[10])) return false;
-
-    return true;
-  }
 }

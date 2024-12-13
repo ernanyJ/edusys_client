@@ -38,21 +38,6 @@ class _StudentsPageState extends State<StudentsPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        onPressed: () {},
-                        child: Row(
-                          children: [
-                            const Text('Adicionar'),
-                            const SizedBox(width: 8),
-                            Icon(
-                              Icons.add,
-                              color: primaryColor,
-                              size: 25,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Spacer(),
-                      TextButton(
                         onPressed: () => state.reloadStudents(context),
                         child: const Text('Recarregar lista'),
                       ),
@@ -66,8 +51,7 @@ class _StudentsPageState extends State<StudentsPage> {
                           )
                         : DataTable2(
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.grey, width: 1.4),
+                              border: Border.all(color: Colors.grey, width: 1),
                             ),
                             columns: [
                               DataColumn(
@@ -194,7 +178,11 @@ class _StudentsPageState extends State<StudentsPage> {
                                                               ?.value ==
                                                           'Atrasada'
                                                       ? Colors.red
-                                                      : Colors.black),
+                                                      : student.currentMonthPaid
+                                                                  ?.value ==
+                                                              'Paga'
+                                                          ? Colors.green[700]
+                                                          : null),
                                     )),
                                     DataCell(Text(student.cpf)),
                                     DataCell(

@@ -32,11 +32,12 @@ class _StudentsDetailsDialogState extends State<StudentsDetailsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var state = Provider.of<StudentPageState>(context);
+    var state = Provider.of<StudentPageState>(context)..updateControllers();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (BuildContext context) => StudentTextController(),
+          create: (BuildContext context) =>
+              StudentTextController(widget.student),
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) =>
@@ -94,7 +95,6 @@ class _StudentsDetailsDialogState extends State<StudentsDetailsDialog> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MyTextField(
-                          
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             CpfInputFormatter(),
@@ -224,38 +224,38 @@ class _StudentsDetailsDialogState extends State<StudentsDetailsDialog> {
                         ),
                         const SizedBox(width: defaultMainPad),
                         EditButton(() {
-                          
                           state.updateStudent(
-                            widget.student.id,
-                            StudentModelOut(
-                              name: textController.nameController.text,
-                              birthDate: formatDateForApi(
-                                  textController.birthController.text),
-                              cpf: textController.cpfController.text,
-                              rg: textController.rgController.text,
-                              sex: Sex.MALE,
-                              enrollmentId:
-                                  textController.enrollmentController.text,
-                              guardianId: {1},
-                              classGroupId: 1,
-                              address: AddressModel(
-                                id: null,
-                                street: textController.streetController.text,
-                                city: textController.cityController.text,
-                                state: textController.stateController.text,
-                                zipCode: textController.zipCodeController.text,
-                                country: textController.countryController.text,
-                                number: textController.numberController.text,
-                                complement:
-                                    textController.complementController.text,
-                                neighborhood:
-                                    textController.neighborhoodController.text,
-                                reference:
-                                    textController.referenceController.text,
+                              widget.student.id,
+                              StudentModelOut(
+                                name: textController.nameController.text,
+                                birthDate: formatDateForApi(
+                                    textController.birthController.text),
+                                cpf: textController.cpfController.text,
+                                rg: textController.rgController.text,
+                                sex: Sex.MALE,
+                                enrollmentId:
+                                    textController.enrollmentController.text,
+                                guardianId: {1},
+                                classGroupId: 1,
+                                address: AddressModel(
+                                  id: null,
+                                  street: textController.streetController.text,
+                                  city: textController.cityController.text,
+                                  state: textController.stateController.text,
+                                  zipCode:
+                                      textController.zipCodeController.text,
+                                  country:
+                                      textController.countryController.text,
+                                  number: textController.numberController.text,
+                                  complement:
+                                      textController.complementController.text,
+                                  neighborhood: textController
+                                      .neighborhoodController.text,
+                                  reference:
+                                      textController.referenceController.text,
+                                ),
                               ),
-                            ),
-                            context
-                          );
+                              context);
                           Navigator.of(context).pop();
                         }),
                       ],

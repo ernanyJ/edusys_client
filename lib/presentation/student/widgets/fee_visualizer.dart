@@ -17,34 +17,40 @@ class FeeVisualizer extends StatelessWidget {
     return SizedBox(
       height: 250,
       width: double.maxFinite,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: [
-              Text('Mensalidades:',
-                  style: Theme.of(context)
-                      .textTheme
-                      .displaySmall!
-                      .copyWith(fontWeight: FontWeight.w500, fontSize: 23)),
-              Text(
-                  'Dia do vencimento: ${state.tuitionFees.isEmpty ? '' : state.tuitionFees.first.dueDate.day}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .displaySmall!
-                      .copyWith(fontWeight: FontWeight.w400, fontSize: 15)),
-              const SizedBox(height: defaultInnerPad),
-            ],
-          ),
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+      child: Visibility(
+        visible: state.tuitionFees.isNotEmpty,
+        replacement: Center(
+            child: Text(
+                'Parece que esse estudante não tem nenhum contrato ativo associado a ele.', style: Theme.of(context).textTheme.bodyMedium,)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
               children: [
-                ...state.tuitionFees.map((e) => MonthFee(e)),
+                Text('Mensalidades:',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(fontWeight: FontWeight.w500, fontSize: 23)),
+                Text(
+                    'Dia do vencimento: ${state.tuitionFees.isEmpty ? '' : state.tuitionFees.first.dueDate.day}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(fontWeight: FontWeight.w400, fontSize: 15)),
+                const SizedBox(height: defaultInnerPad),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ...state.tuitionFees.map((e) => MonthFee(e)),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

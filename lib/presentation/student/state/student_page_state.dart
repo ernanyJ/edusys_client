@@ -171,11 +171,11 @@ class StudentPageState extends ChangeNotifier {
 
     _students.remove(_students.firstWhere((element) => element.id == id));
     _students.add(cacheStudent);
+    _students.sort((a, b) => a.id.compareTo(b.id));
     notifyListeners();
     try {
       await repository.updateStudent(id, student);
     } on CpfException catch (e) {
-      notifyListeners();
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -199,5 +199,9 @@ class StudentPageState extends ChangeNotifier {
       rethrow;
     }
     notifyListeners();
+  }
+
+  updateControllers() {
+    
   }
 }

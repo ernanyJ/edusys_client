@@ -1,3 +1,4 @@
+import 'package:edusys_client/presentation/guardian/state/guardian_page_state.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/router.dart';
@@ -17,6 +18,7 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => StudentPageState()),
+        ChangeNotifierProvider(create: (_) => GuardianPageState()),
       ],
       child: MaterialApp.router(
         routerConfig: appRouter,
