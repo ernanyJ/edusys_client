@@ -1,3 +1,4 @@
+import 'package:edusys_client/presentation/contract/contract_page_state.dart';
 import 'package:edusys_client/presentation/guardian/state/guardian_page_state.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
 import 'package:edusys_client/util/consts.dart';
@@ -14,6 +15,7 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final state = Provider.of<StudentPageState>(context);
     final guardianState = Provider.of<GuardianPageState>(context);
+    final contractState = Provider.of<ContractPageState>(context);
     return AppBar(
       actions: [
         const SizedBox(width: 20),
@@ -52,9 +54,14 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            contractState.contracts.isEmpty
+                ? contractState.getContracts()
+                : null;
+            context.go('/contract');
+          },
           child: const Text(
-            'Mensalidades',
+            'Contrato',
           ),
         ),
         TextButton(

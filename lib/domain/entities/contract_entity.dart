@@ -4,8 +4,8 @@ import 'package:edusys_client/enums/contract_status_enum.dart';
 
 class ContractEntity {
   final int id;
-  final DateTime startDate;
-  final DateTime endDate;
+  final DateTime? startDate;
+  final DateTime? endDate;
   final ContractStatusEnum status;
   final StudentEntity student;
   final GuardianEntity guardian;

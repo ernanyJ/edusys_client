@@ -37,4 +37,12 @@ class StudentDatasource extends BaseDatasource {
       throw Exception('Failed to update user: ${e.response}');
     }
   }
+
+  Future<int> countStudent() {
+    return dio.get('/student/count').then((e) => e.data);
+  }
+
+  Future<int> countDebts() {
+    return dio.get('/student/with-debts').then((e) => e.data);
+  }
 }

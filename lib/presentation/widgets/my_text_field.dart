@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MyTextField extends StatelessWidget {
-  const MyTextField(
-      {super.key,
-      required this.label,
-      required this.controller,
-      this.inputFormatters,
-      this.helpTip,
-      this.enabled,
-      this.actions,
-      this.scaleFactor = 0.3, this.icon 
-      });
+  const MyTextField({
+    super.key,
+    required this.label,
+    required this.controller,
+    this.inputFormatters,
+    this.helpTip,
+    this.enabled,
+    this.actions,
+    this.scaleFactor = 0.3,
+    this.icon,
+    this.readOnly = false,
+  });
 
   final String label;
   final TextEditingController? controller;
@@ -22,6 +24,7 @@ class MyTextField extends StatelessWidget {
   final List<Widget>? actions;
   final double scaleFactor;
   final Widget? icon;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class MyTextField extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * scaleFactor,
             child: TextField(
-              
+              readOnly: readOnly,
               cursorColor: primaryColor,
               keyboardType: TextInputType.number,
               enabled: enabled,
@@ -63,9 +66,7 @@ class MyTextField extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: neutralColor)),
               ),
-              
             ),
-            
           ),
         ],
       ),

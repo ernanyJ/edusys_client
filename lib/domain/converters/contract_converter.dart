@@ -5,7 +5,7 @@ import 'package:edusys_client/domain/converters/guardian_converter.dart';
 import 'package:edusys_client/domain/converters/student_converter.dart';
 import 'package:edusys_client/domain/entities/contract_entity.dart';
 
-class ContractConverter extends Converter<ContractModel, ContractEntity> {
+class ContractInConverter extends Converter<ContractModel, ContractEntity> {
   StudentConverter studentConverter = StudentConverter();
   GuardianConverter guardianConverter = GuardianConverter();
 

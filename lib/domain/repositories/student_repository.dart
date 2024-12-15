@@ -7,4 +7,8 @@ abstract interface class StudentRepository {
   Future<void> deleteStudent(int id);
 
   Future<StudentEntity> updateStudent(int id, StudentModelOut student);
+
+  Future<int> countStudents();
+
+  Future<int> countDebts(); 
 }

@@ -2,6 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:edusys_client/core/formaters.dart';
 import 'package:edusys_client/presentation/guardian/state/guardian_page_state.dart';
 import 'package:edusys_client/util/consts.dart';
+import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,12 +30,17 @@ class _GuardianPageState extends State<GuardianPage> {
             ],
           ),
           Expanded(
-            child: state.guardians.isEmpty
+            child: state.guardians.isEmpty ||
+                    state.loadingState == LoadingState.LOADING
                 ? Center(
                     child: CircularProgressIndicator(color: primaryColor),
                   )
                 : DataTable2(
+
+                    dataRowHeight: 60,
+                    
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.grey, width: 1),
                     ),
                     columns: [
@@ -67,7 +73,6 @@ class _GuardianPageState extends State<GuardianPage> {
                         ),
                       ),
                       DataColumn(
-                        tooltip: 'Ordenar por email',
                         label: Text(
                           'Email',
                           style: Theme.of(context).textTheme.bodyMedium,

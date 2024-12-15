@@ -10,10 +10,26 @@ import 'package:flutter/material.dart';
 class StudentPageState extends ChangeNotifier {
   StudentRepositoryImpl repository = StudentRepositoryImpl();
 
+  init() async {
+    await countStudents();
+  }
+
+  int _studentCount = 0;
+  int _studentDebtCount = 0;
+
+  int get studentDebtCount => _studentDebtCount;
+  int get studentCount => _studentCount;
+
   LoadingState _loadingState = LoadingState.LOADING;
   LoadingState get loadingState => _loadingState;
   set loadingState(LoadingState value) {
     _loadingState = value;
+    notifyListeners();
+  }
+
+  Future<void> countStudents() async {
+    _studentCount = await repository.countStudents();
+    _studentDebtCount = await repository.countDebts();
     notifyListeners();
   }
 
@@ -28,6 +44,8 @@ class StudentPageState extends ChangeNotifier {
     _loadingState = LoadingState.LOADING;
     notifyListeners();
     _students = [];
+
+    countStudents();
 
     loadStudents(context);
     _loadingState = LoadingState.LOADED;
@@ -199,9 +217,5 @@ class StudentPageState extends ChangeNotifier {
       rethrow;
     }
     notifyListeners();
-  }
-
-  updateControllers() {
-    
   }
 }

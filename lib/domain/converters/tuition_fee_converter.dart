@@ -9,7 +9,7 @@ import 'package:edusys_client/domain/entities/tuition_fee_entity.dart';
 class TuitionFeeConverter extends Converter<TuitionFeeModel, TuitionFeeEntity> {
   StudentConverter studentConverter = StudentConverter();
   GuardianConverter guardianConverter = GuardianConverter();
-  ContractConverter contractConverter = ContractConverter();
+  ContractInConverter contractConverter = ContractInConverter();
 
   @override
   TuitionFeeEntity convert(TuitionFeeModel input) {

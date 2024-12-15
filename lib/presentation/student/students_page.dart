@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
+import 'package:edusys_client/presentation/student/widgets/count_card.dart';
 import 'package:edusys_client/presentation/student/widgets/students_details_dialog.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/hover_builder.dart';
@@ -35,6 +36,20 @@ class _StudentsPageState extends State<StudentsPage> {
             : Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    spacing: defaultInnerPad,
+                    children: [
+                      CountCard(
+                          color: Colors.blue,
+                          label: 'Total de estudantes',
+                          info: state.studentCount.toString()),
+                      CountCard(
+                          color: dangerColor,
+                          label: 'Mensalidades atrasadas',
+                          info: state.studentDebtCount.toString()),
+                    ],
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
@@ -50,7 +65,9 @@ class _StudentsPageState extends State<StudentsPage> {
                             child: CircularProgressIndicator(),
                           )
                         : DataTable2(
+                            dataRowHeight: 60,
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.grey, width: 1),
                             ),
                             columns: [

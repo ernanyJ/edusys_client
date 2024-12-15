@@ -26,4 +26,14 @@ class StudentRepositoryImpl implements StudentRepository {
         .updateStudent(id, student)
         .then((e) => _inConverter.convert(e));
   }
+
+  @override
+  Future<int> countStudents() {
+    return _studentDataSource.countStudent();
+  }
+
+    @override
+  Future<int> countDebts() {
+    return _studentDataSource.countDebts();
+  }
 }

@@ -32,7 +32,7 @@ class _StudentsDetailsDialogState extends State<StudentsDetailsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var state = Provider.of<StudentPageState>(context)..updateControllers();
+    var state = Provider.of<StudentPageState>(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
