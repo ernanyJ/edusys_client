@@ -4,12 +4,10 @@ import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-double scale = 0.20;
+const double scale = 0.20;
 
-class CreateStudentDialog extends StatelessWidget {
-  const CreateStudentDialog({
-    super.key,
-  });
+class AddGuardianDialog extends StatelessWidget {
+  const AddGuardianDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,24 +61,48 @@ class CreateStudentDialog extends StatelessWidget {
                         ],
                         label: 'Data de nascimento *',
                         controller: TextEditingController()),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dados acadêmicos:',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: primaryColor),
-                    ),
                     MyTextField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[a-zA-Z0-9@._-]')),
+                        ],
                         scaleFactor: scale,
-                        label: 'Matrícula *',
+                        label: 'Email *',
+                        controller: TextEditingController()),
+                    MyTextField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          TelefoneInputFormatter(),
+                        ],
+                        scaleFactor: scale,
+                        label: 'Celular *',
+                        controller: TextEditingController()),
+                    MyTextField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          TelefoneInputFormatter(),
+                        ],
+                        scaleFactor: scale,
+                        label: 'Celular secundário *',
                         controller: TextEditingController()),
                   ],
                 ),
+                const SizedBox(height: defaultInnerPad),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Pagador'),
+                    Row(
+                      children: [
+                        Radio(value: null, groupValue: null, onChanged: null),
+                        Text('Sim'),
+                        Radio(value: null, groupValue: null, onChanged: null),
+                        Text('Não'),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: defaultInnerPad),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
