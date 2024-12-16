@@ -2,7 +2,7 @@ import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MyTextField extends StatelessWidget {
+class MyTextField extends StatefulWidget {
   const MyTextField({
     super.key,
     required this.label,
@@ -16,6 +16,7 @@ class MyTextField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.suffix,
+    this.isRequired = false,
   });
 
   final String label;
@@ -29,6 +30,14 @@ class MyTextField extends StatelessWidget {
   final bool readOnly;
   final Widget? suffix;
   final Widget? suffixIcon;
+  final bool isRequired;
+
+  @override
+  State<MyTextField> createState() => _MyTextFieldState();
+}
+
+class _MyTextFieldState extends State<MyTextField> {
+  bool showWarning = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,36 +51,64 @@ class MyTextField extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                label,
+                widget.label,
                 style: TextStyle(color: neutralColor),
               ),
               const SizedBox(width: defaultInnerPad),
-              if (actions != null) ...actions!, // todo: ajustar espaçamento
-              SizedBox(child: helpTip ?? const SizedBox.shrink()),
+              if (widget.actions != null)
+                ...widget.actions!, // todo: ajustar espaçamento
+              SizedBox(child: widget.helpTip ?? const SizedBox.shrink()),
             ],
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * scaleFactor,
-            child: TextField(
-              readOnly: readOnly,
-              cursorColor: primaryColor,
-              keyboardType: TextInputType.number,
-              enabled: enabled,
-              inputFormatters: inputFormatters,
-              controller: controller,
-              decoration: InputDecoration(
-                suffixIcon: suffixIcon,
-                suffix: suffix,
-                prefixIcon: icon,
-                focusColor: primaryColor,
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: primaryColor)),
-                focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: dangerColor)),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: neutralColor)),
-              ),
+            width: MediaQuery.of(context).size.width * widget.scaleFactor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  onTapOutside: (event) {
+                    if (widget.isRequired) {
+                      if (widget.controller!.text.isEmpty) {
+                        setState(() {
+                          showWarning = true;
+                        });
+                      } else {
+                        FocusScope.of(context).unfocus();
+                        setState(() {
+                          showWarning = false;
+                        });
+                      }
+                    }
+                    FocusScope.of(context).unfocus();
+                  },
+                  readOnly: widget.readOnly,
+                  cursorColor: primaryColor,
+                  keyboardType: TextInputType.number,
+                  enabled: widget.enabled,
+                  inputFormatters: widget.inputFormatters,
+                  controller: widget.controller,
+                  decoration: InputDecoration(
+                    suffixIcon: widget.suffixIcon,
+                    suffix: widget.suffix,
+                    prefixIcon: widget.icon,
+                    focusColor: primaryColor,
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: primaryColor)),
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: dangerColor)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: neutralColor)),
+                  ),
+                ),
+                Visibility(
+                  visible: showWarning,
+                  child: Text(
+                    'Campo obrigatório!',
+                    style: TextStyle(color: dangerColor),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

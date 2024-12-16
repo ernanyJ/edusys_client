@@ -64,6 +64,7 @@ class _PrivateInfoFields extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.start,
           children: [
             MyTextField(
+                isRequired: true,
                 scaleFactor: scale,
                 label: 'Nome *',
                 controller: TextEditingController()),
@@ -75,6 +76,7 @@ class _PrivateInfoFields extends StatelessWidget {
               ],
               label: 'CPF *',
               controller: TextEditingController(),
+              isRequired: true,
             ),
             Column(
               children: [
@@ -85,11 +87,13 @@ class _PrivateInfoFields extends StatelessWidget {
               ],
             ),
             MyTextField(
+              isRequired: true,
               scaleFactor: scale,
               label: 'RG',
               controller: TextEditingController(),
             ),
             MyTextField(
+                isRequired: true,
                 scaleFactor: scale,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -98,6 +102,7 @@ class _PrivateInfoFields extends StatelessWidget {
                 label: 'Data de nascimento *',
                 controller: TextEditingController()),
             MyTextField(
+                isRequired: true,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@._-]')),
                 ],
@@ -110,6 +115,7 @@ class _PrivateInfoFields extends StatelessWidget {
                   TelefoneInputFormatter(),
                 ],
                 scaleFactor: scale,
+                isRequired: true,
                 label: 'Celular *',
                 controller: TextEditingController()),
             MyTextField(
@@ -118,7 +124,7 @@ class _PrivateInfoFields extends StatelessWidget {
                   TelefoneInputFormatter(),
                 ],
                 scaleFactor: scale,
-                label: 'Celular secundário *',
+                label: 'Celular secundário',
                 controller: TextEditingController()),
           ],
         ),
@@ -147,26 +153,43 @@ class _AddressFieds extends StatelessWidget {
         Wrap(
           children: [
             MyTextField(
+              isRequired: true,
               label: 'Rua *',
               controller: TextEditingController(),
             ),
             MyTextField(
+              isRequired: true,
               label: 'Número *',
               controller: TextEditingController(),
             ),
             MyTextField(
+              isRequired: true,
               label: 'Complemento *',
               controller: TextEditingController(),
             ),
             MyTextField(
+              isRequired: true,
               label: 'Bairro *',
               controller: TextEditingController(),
             ),
-            MyTextField(label: 'Cidade *', controller: TextEditingController()),
-            MyTextField(label: 'Estado *', controller: TextEditingController()),
-            MyTextField(label: 'CEP *', controller: TextEditingController()),
-            MyTextField(label: 'País *', controller: TextEditingController()),
             MyTextField(
+                isRequired: true,
+                label: 'Cidade *',
+                controller: TextEditingController()),
+            MyTextField(
+                isRequired: true,
+                label: 'Estado *',
+                controller: TextEditingController()),
+            MyTextField(
+                isRequired: true,
+                label: 'CEP *',
+                controller: TextEditingController()),
+            MyTextField(
+                isRequired: true,
+                label: 'País *',
+                controller: TextEditingController()),
+            MyTextField(
+              isRequired: true,
               label: 'Referência',
               controller: TextEditingController(),
             ),
