@@ -1,16 +1,27 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:edusys_client/data/models/out/guardian_model_out.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
+import 'package:edusys_client/presentation/contract/widgets/guardian_add/add_guardian_state.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
 import 'package:edusys_client/presentation/widgets/sex_dropdown.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 const double scale = 0.20;
 
-class AddGuardianDialog extends StatelessWidget {
-  const AddGuardianDialog({super.key});
+class AddGuardianDialog extends StatefulWidget {
+  const AddGuardianDialog({super.key, this.guardian, this.index});
 
+  final GuardianModelOut? guardian;
+  final int? index;
+
+  @override
+  State<AddGuardianDialog> createState() => _AddGuardianDialogState();
+}
+
+class _AddGuardianDialogState extends State<AddGuardianDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -29,12 +40,25 @@ class AddGuardianDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
+            if (widget.guardian != null && widget.index != null) {
+              context.read<AddGuardianState>().clearControllers();
+            }
           },
           child: const Text('Cancelar'),
         ),
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            if (widget.guardian != null && widget.index != null) {
+              context
+                  .read<AddGuardianState>()
+                  .guardians
+                  .removeAt(widget.index!);
+              context.read<AddGuardianState>().updateGuardian(widget.index!);
+            }
+
+            context.read<AddGuardianState>().addGuardian();
+
+            Navigator.pop(context);
           },
           child: const Text('Salvar'),
         ),
@@ -48,6 +72,7 @@ class _PrivateInfoFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AddGuardianState>(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +92,7 @@ class _PrivateInfoFields extends StatelessWidget {
                 isRequired: true,
                 scaleFactor: scale,
                 label: 'Nome *',
-                controller: TextEditingController()),
+                controller: state.guardianNameController),
             MyTextField(
               scaleFactor: scale,
               inputFormatters: [
@@ -75,14 +100,16 @@ class _PrivateInfoFields extends StatelessWidget {
                 CpfInputFormatter(),
               ],
               label: 'CPF *',
-              controller: TextEditingController(),
+              controller: state.guardianCpfController,
               isRequired: true,
             ),
             Column(
               children: [
                 const SizedBox(height: 9),
                 SexDropdown(
-                  onChanged: (Sex? value) {},
+                  onChanged: (Sex? value) {
+                    state.currentSexSelected = value;
+                  },
                 ),
               ],
             ),
@@ -90,7 +117,7 @@ class _PrivateInfoFields extends StatelessWidget {
               isRequired: true,
               scaleFactor: scale,
               label: 'RG',
-              controller: TextEditingController(),
+              controller: state.guardianRgController,
             ),
             MyTextField(
                 isRequired: true,
@@ -100,7 +127,7 @@ class _PrivateInfoFields extends StatelessWidget {
                   DataInputFormatter(),
                 ],
                 label: 'Data de nascimento *',
-                controller: TextEditingController()),
+                controller: state.guardianBirthDateController),
             MyTextField(
                 isRequired: true,
                 inputFormatters: [
@@ -108,7 +135,7 @@ class _PrivateInfoFields extends StatelessWidget {
                 ],
                 scaleFactor: scale,
                 label: 'Email *',
-                controller: TextEditingController()),
+                controller: state.guardianEmailController),
             MyTextField(
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -117,7 +144,7 @@ class _PrivateInfoFields extends StatelessWidget {
                 scaleFactor: scale,
                 isRequired: true,
                 label: 'Celular *',
-                controller: TextEditingController()),
+                controller: state.guardianPhoneController),
             MyTextField(
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -125,7 +152,7 @@ class _PrivateInfoFields extends StatelessWidget {
                 ],
                 scaleFactor: scale,
                 label: 'Celular secundário',
-                controller: TextEditingController()),
+                controller: state.guardianSecondaryPhoneController),
           ],
         ),
         PagadorRadio(
@@ -142,6 +169,7 @@ class _AddressFieds extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AddGuardianState>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -155,43 +183,43 @@ class _AddressFieds extends StatelessWidget {
             MyTextField(
               isRequired: true,
               label: 'Rua *',
-              controller: TextEditingController(),
+              controller: state.guardianStreetController,
             ),
             MyTextField(
               isRequired: true,
               label: 'Número *',
-              controller: TextEditingController(),
+              controller: state.guardianNumberController,
             ),
             MyTextField(
               isRequired: true,
               label: 'Complemento *',
-              controller: TextEditingController(),
+              controller: state.guardianComplementController,
             ),
             MyTextField(
               isRequired: true,
               label: 'Bairro *',
-              controller: TextEditingController(),
+              controller: state.guardianNeighborhoodController,
             ),
             MyTextField(
                 isRequired: true,
                 label: 'Cidade *',
-                controller: TextEditingController()),
+                controller: state.guardianCityController),
             MyTextField(
                 isRequired: true,
                 label: 'Estado *',
-                controller: TextEditingController()),
+                controller: state.guardianStateController),
             MyTextField(
                 isRequired: true,
                 label: 'CEP *',
-                controller: TextEditingController()),
+                controller: state.guardianZipCodeController),
             MyTextField(
                 isRequired: true,
                 label: 'País *',
-                controller: TextEditingController()),
+                controller: state.guardianCountryController),
             MyTextField(
               isRequired: true,
               label: 'Referência',
-              controller: TextEditingController(),
+              controller: state.guardianReferenceController,
             ),
           ],
         ),
