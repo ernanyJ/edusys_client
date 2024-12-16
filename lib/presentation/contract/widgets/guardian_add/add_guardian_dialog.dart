@@ -85,6 +85,11 @@ class _PrivateInfoFields extends StatelessWidget {
               ],
             ),
             MyTextField(
+              scaleFactor: scale,
+              label: 'RG',
+              controller: TextEditingController(),
+            ),
+            MyTextField(
                 scaleFactor: scale,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -189,7 +194,10 @@ class _PagadorRadioState extends State<PagadorRadio> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Pagador'),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text('Pagador', style: TextStyle(color: neutralColor)),
+        ),
         Row(
           children: [
             Radio(
