@@ -13,7 +13,9 @@ class MyTextField extends StatelessWidget {
     this.actions,
     this.scaleFactor = 0.3,
     this.icon,
-    this.readOnly = false, this.suffix,
+    this.suffixIcon,
+    this.readOnly = false,
+    this.suffix,
   });
 
   final String label;
@@ -26,6 +28,7 @@ class MyTextField extends StatelessWidget {
   final Widget? icon;
   final bool readOnly;
   final Widget? suffix;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,6 @@ class MyTextField extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * scaleFactor,
             child: TextField(
-              
               readOnly: readOnly,
               cursorColor: primaryColor,
               keyboardType: TextInputType.number,
@@ -58,6 +60,7 @@ class MyTextField extends StatelessWidget {
               inputFormatters: inputFormatters,
               controller: controller,
               decoration: InputDecoration(
+                suffixIcon: suffixIcon,
                 suffix: suffix,
                 prefixIcon: icon,
                 focusColor: primaryColor,
@@ -75,6 +78,4 @@ class MyTextField extends StatelessWidget {
       ),
     );
   }
-
-  // Implement CPF validation
 }

@@ -173,7 +173,7 @@ class StudentPageState extends ChangeNotifier {
         sex: student.sex,
         enrollment: student.enrollmentId,
         address: AddressEntity(
-            id: student.address.id,
+            id: id,
             street: student.address.street,
             city: student.address.city,
             state: student.address.state,

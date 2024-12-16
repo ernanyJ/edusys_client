@@ -1,10 +1,12 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/presentation/contract/widgets/create_student_dialog.dart';
+import 'package:edusys_client/presentation/contract/widgets/create_student_dialog_state.dart';
 import 'package:edusys_client/presentation/guardian/widget/add_guardian_dialog.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class ContractAddPage extends StatelessWidget {
   const ContractAddPage({super.key});
@@ -22,13 +24,15 @@ class ContractAddPage extends StatelessWidget {
           ),
           MyTextField(
             scaleFactor: 0.22,
-            readOnly: true,
+            suffixIcon: Icon(Icons.search, color: neutralColor),
             actions: [
               TextButton(
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const CreateStudentDialog(),
+                    builder: (context) => ChangeNotifierProvider(
+                        create: (context) => CreateStudentDialogState(),
+                        child: const CreateStudentDialog()),
                   );
                 },
                 child: const Text('Adicionar'),
@@ -75,6 +79,7 @@ class ContractAddPage extends StatelessWidget {
           Wrap(
             children: [
               MyTextField(
+                suffixIcon: const Icon(Icons.calendar_today),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   DataInputFormatter(),
@@ -84,6 +89,7 @@ class ContractAddPage extends StatelessWidget {
                 controller: TextEditingController(),
               ),
               MyTextField(
+                suffixIcon: const Icon(Icons.calendar_today),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   DataInputFormatter(),
@@ -108,7 +114,9 @@ class ContractAddPage extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  showDialog(context: context, builder: (context) => const AddGuardianDialog());
+                  showDialog(
+                      context: context,
+                      builder: (context) => const AddGuardianDialog());
                 },
               ),
             ],

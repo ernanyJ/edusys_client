@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/core/formaters.dart';
 import 'package:edusys_client/data/models/in/address_model_in.dart';
+import 'package:edusys_client/data/models/out/address_model_out.dart';
 import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
@@ -237,8 +238,7 @@ class _StudentsDetailsDialogState extends State<StudentsDetailsDialog> {
                                     textController.enrollmentController.text,
                                 guardianId: {1},
                                 classGroupId: 1,
-                                address: AddressModel(
-                                  id: null,
+                                address: AddressModelOut(
                                   street: textController.streetController.text,
                                   city: textController.cityController.text,
                                   state: textController.stateController.text,

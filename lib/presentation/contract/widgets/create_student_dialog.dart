@@ -1,10 +1,15 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:edusys_client/enums/sex_enum.dart';
+import 'package:edusys_client/presentation/contract/widgets/create_student_dialog_state.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
+import 'package:edusys_client/presentation/widgets/sex_dropdown.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 double scale = 0.20;
+final GlobalKey<FormState> personalDataFormKey = GlobalKey<FormState>();
 
 class CreateStudentDialog extends StatelessWidget {
   const CreateStudentDialog({
@@ -13,6 +18,7 @@ class CreateStudentDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<CreateStudentDialogState>(context);
     return AlertDialog(
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.7,
@@ -25,110 +31,9 @@ class CreateStudentDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Informações pessoais:',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor),
-                ),
-                Wrap(
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: [
-                    Form(
-                      child: MyTextField(
-                          scaleFactor: scale,
-                          label: 'Nome *',
-                          controller: TextEditingController()),
-                    ),
-                    MyTextField(
-                      scaleFactor: scale,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        CpfInputFormatter(),
-                      ],
-                      label: 'CPF *',
-                      controller: TextEditingController(),
-                    ),
-                    MyTextField(
-                        scaleFactor: scale,
-                        label: 'RG *',
-                        controller: TextEditingController()),
-                    MyTextField(
-                        scaleFactor: scale,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          DataInputFormatter(),
-                        ],
-                        label: 'Data de nascimento *',
-                        controller: TextEditingController()),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dados acadêmicos:',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: primaryColor),
-                    ),
-                    MyTextField(
-                        scaleFactor: scale,
-                        label: 'Matrícula *',
-                        controller: TextEditingController()),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Endereço:',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: primaryColor),
-                    ),
-                    Wrap(
-                      children: [
-                        MyTextField(
-                          label: 'Rua *',
-                          controller: TextEditingController(),
-                        ),
-                        MyTextField(
-                          label: 'Número *',
-                          controller: TextEditingController(),
-                        ),
-                        MyTextField(
-                          label: 'Complemento *',
-                          controller: TextEditingController(),
-                        ),
-                        MyTextField(
-                          label: 'Bairro *',
-                          controller: TextEditingController(),
-                        ),
-                        MyTextField(
-                            label: 'Cidade *',
-                            controller: TextEditingController()),
-                        MyTextField(
-                            label: 'Estado *',
-                            controller: TextEditingController()),
-                        MyTextField(
-                            label: 'CEP *',
-                            controller: TextEditingController()),
-                        MyTextField(
-                            label: 'País *',
-                            controller: TextEditingController()),
-                        MyTextField(
-                          label: 'Referência',
-                          controller: TextEditingController(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                _PersonalData(state),
+                _AcademicData(state),
+                _AddressData(state),
               ],
             ),
           ),
@@ -137,16 +42,173 @@ class CreateStudentDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            //  Navigator.of(context).pop();
           },
           child: const Text('Cancelar'),
         ),
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            if (personalDataFormKey.currentState!.validate()) {
+              state.createStudent();
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content:
+                        Text('Por favor, preencha todos os campos obrigatórios')),
+              );
+            }
+            state.createStudent();
           },
           child: const Text('Salvar'),
         ),
+      ],
+    );
+  }
+}
+
+class _PersonalData extends StatelessWidget {
+  const _PersonalData(this.state);
+
+  final CreateStudentDialogState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Informações pessoais:',
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor),
+        ),
+        Form(
+          key: personalDataFormKey,
+          child: Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            children: [
+              MyTextField(
+
+                  scaleFactor: scale,
+                  label: 'Nome *',
+                  controller: state.nameController),
+              MyTextField(
+                scaleFactor: scale,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CpfInputFormatter(),
+                ],
+                label: 'CPF *',
+                controller: state.cpfController,
+              ),
+              MyTextField(
+                  scaleFactor: scale,
+                  label: 'RG *',
+                  controller: state.rgController),
+              MyTextField(
+                scaleFactor: scale,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  DataInputFormatter(),
+                ],
+                label: 'Data de nascimento *',
+                controller: state.birthDateController,
+              ),
+              const SizedBox(width: 10),
+              Column(
+                children: [
+                  const SizedBox(height: 9),
+                  SexDropdown(
+                    onChanged: (Sex? value) {
+                      state.sex = value!;
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AddressData extends StatelessWidget {
+  const _AddressData(this.state);
+  final CreateStudentDialogState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Endereço:',
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor),
+        ),
+        Wrap(
+          children: [
+            MyTextField(
+              label: 'Rua *',
+              controller: state.streetController,
+            ),
+            MyTextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              label: 'Número *',
+              controller: state.numberController,
+            ),
+            MyTextField(
+              label: 'Complemento *',
+              controller: state.complementController,
+            ),
+            MyTextField(
+              label: 'Bairro *',
+              controller: state.neighborhoodController,
+            ),
+            MyTextField(label: 'Cidade *', controller: state.cityController),
+            MyTextField(label: 'Estado *', controller: state.stateController),
+            MyTextField(
+              inputFormatters: [
+                CepInputFormatter(),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              label: 'CEP *',
+              controller: state.zipCodeController,
+            ),
+            MyTextField(label: 'País *', controller: state.countryController),
+            MyTextField(
+              label: 'Referência',
+              controller: state.referenceController,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _AcademicData extends StatelessWidget {
+  const _AcademicData(this.state);
+
+  final CreateStudentDialogState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Dados acadêmicos:',
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor),
+        ),
+        MyTextField(
+            scaleFactor: scale,
+            label: 'Matrícula *',
+            controller: state.enrollmentController),
       ],
     );
   }

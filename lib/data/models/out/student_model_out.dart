@@ -1,4 +1,5 @@
 import 'package:edusys_client/data/models/in/address_model_in.dart';
+import 'package:edusys_client/data/models/out/address_model_out.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
 
@@ -10,8 +11,8 @@ class StudentModelOut {
   final Sex sex;
   final String enrollmentId;
   final Set<int> guardianId;
-  final int classGroupId;
-  final AddressModel address;
+  final int? classGroupId;
+  final AddressModelOut address;
 
   StudentModelOut(
       {required this.name,
@@ -48,8 +49,7 @@ class StudentModelOut {
         enrollmentId: entity.enrollment,
         guardianId: entity.guardians.map((e) => e.id).toSet(),
         classGroupId: entity.classGroup.id,
-        address: AddressModel(
-            id: null,
+        address: AddressModelOut(
             street: entity.address.street,
             city: entity.address.city,
             state: entity.address.state,
