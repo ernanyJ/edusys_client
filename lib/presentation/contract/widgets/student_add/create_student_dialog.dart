@@ -1,6 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
-import 'package:edusys_client/presentation/contract/widgets/create_student_dialog_state.dart';
+import 'package:edusys_client/presentation/contract/widgets/student_add/create_student_dialog_state.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
 import 'package:edusys_client/presentation/widgets/sex_dropdown.dart';
 import 'package:edusys_client/util/consts.dart';
@@ -42,7 +42,7 @@ class CreateStudentDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            //  Navigator.of(context).pop();
+            Navigator.of(context).pop();
           },
           child: const Text('Cancelar'),
         ),
@@ -53,11 +53,11 @@ class CreateStudentDialog extends StatelessWidget {
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                    content:
-                        Text('Por favor, preencha todos os campos obrigatórios')),
+                    content: Text(
+                        'Por favor, preencha todos os campos obrigatórios')),
               );
             }
-            state.createStudent();
+            Navigator.of(context).pop();
           },
           child: const Text('Salvar'),
         ),
@@ -88,7 +88,6 @@ class _PersonalData extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.start,
             children: [
               MyTextField(
-
                   scaleFactor: scale,
                   label: 'Nome *',
                   controller: state.nameController),
@@ -119,6 +118,7 @@ class _PersonalData extends StatelessWidget {
                 children: [
                   const SizedBox(height: 9),
                   SexDropdown(
+                    initialValue: state.currentStudent?.sex,
                     onChanged: (Sex? value) {
                       state.sex = value!;
                     },

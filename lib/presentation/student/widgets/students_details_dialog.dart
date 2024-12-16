@@ -1,6 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/core/formaters.dart';
-import 'package:edusys_client/data/models/in/address_model_in.dart';
 import 'package:edusys_client/data/models/out/address_model_out.dart';
 import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';

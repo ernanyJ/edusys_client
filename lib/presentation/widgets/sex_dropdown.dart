@@ -9,10 +9,12 @@ class SexDropdown extends StatelessWidget {
     super.key,
     this.scaleFactor = scale,
     required this.onChanged,
+    this.initialValue,
   });
 
   final double scaleFactor;
   final ValueChanged<Sex?> onChanged;
+  final Sex? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class SexDropdown extends StatelessWidget {
             style: TextStyle(color: neutralColor),
           ),
           DropdownButtonFormField<Sex>(
+            value: initialValue,
             validator: (value) {
               if (value == null) {
                 return 'Selecione o sexo';

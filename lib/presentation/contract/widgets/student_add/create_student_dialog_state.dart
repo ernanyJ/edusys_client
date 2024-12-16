@@ -1,6 +1,5 @@
 import 'package:edusys_client/data/models/out/address_model_out.dart';
 import 'package:edusys_client/data/models/out/student_model_out.dart';
-import 'package:edusys_client/domain/entities/student_entity.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
 import 'package:flutter/material.dart';
 
@@ -51,5 +50,25 @@ class CreateStudentDialogState extends ChangeNotifier {
       ),
       classGroupId: null,
     );
+    notifyListeners();
+  }
+
+  void clear() {
+    nameController.clear();
+    cpfController.clear();
+    rgController.clear();
+    birthDateController.clear();
+    enrollmentController.clear();
+    streetController.clear();
+    numberController.clear();
+    neighborhoodController.clear();
+    cityController.clear();
+    stateController.clear();
+    zipCodeController.clear();
+    complementController.clear();
+    countryController.clear();
+    referenceController.clear();
+    currentStudent = null;
+    notifyListeners();
   }
 }
