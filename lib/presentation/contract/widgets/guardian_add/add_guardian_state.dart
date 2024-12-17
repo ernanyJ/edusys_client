@@ -188,17 +188,18 @@ class AddGuardianState extends ChangeNotifier {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmar Exclusão'),
-          content: Text('Você realmente deseja excluir este responsável?'),
+          title: const Text('Confirmar Exclusão'),
+          content:
+              const Text('Você realmente deseja excluir este responsável?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Excluir'),
+              child: const Text('Excluir'),
               onPressed: () {
                 Navigator.of(context).pop();
                 if (index >= 0 && index < guardians.length) {
