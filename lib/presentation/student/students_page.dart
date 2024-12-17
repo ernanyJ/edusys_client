@@ -217,7 +217,7 @@ class _StudentsPageState extends State<StudentsPage> {
                                         },
                                       ),
                                     ),
-                                    DataCell(Text(student.enrollment)),
+                                    DataCell(Text(student.enrollment ?? '')),
                                   ],
                                 );
                               }),

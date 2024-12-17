@@ -1,6 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/presentation/contract/widgets/guardian_add/add_guardian_state.dart';
-import 'package:edusys_client/presentation/contract/widgets/student_add/create_student_dialog.dart';
+import 'package:edusys_client/presentation/contract/widgets/student_add/add_student_dialog.dart';
 import 'package:edusys_client/presentation/contract/widgets/student_add/create_student_dialog_state.dart';
 import 'package:edusys_client/presentation/contract/widgets/guardian_add/add_guardian_dialog.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
@@ -33,7 +33,7 @@ class ContractAddPage extends StatelessWidget {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => const CreateStudentDialog(),
+                        builder: (context) => const AddStudentDialog(),
                       );
                     },
                     child: const Text('Adicionar'),
@@ -133,6 +133,12 @@ class ContractAddPage extends StatelessWidget {
                       ],
                     ),
                     onPressed: () {
+                      var state = context.read<AddGuardianState>();
+
+                      if (state.guardianNameController.text == '') {
+                        state.currentSexSelected = null;
+                      }
+
                       showDialog(
                           context: context,
                           builder: (context) => const AddGuardianDialog());
@@ -150,6 +156,9 @@ class ContractAddPage extends StatelessWidget {
                           context
                               .read<AddGuardianState>()
                               .setUpControllers(guardian, index);
+
+                          context.read<AddGuardianState>().currentSexSelected =
+                              guardian.sex;
 
                           showDialog(
                             barrierDismissible: false,

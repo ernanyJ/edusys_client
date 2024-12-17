@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/data/models/out/guardian_model_out.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
+import 'package:edusys_client/exceptions/invalid_input.dart';
 import 'package:edusys_client/presentation/contract/widgets/guardian_add/add_guardian_state.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
 import 'package:edusys_client/presentation/widgets/sex_dropdown.dart';
@@ -39,24 +40,58 @@ class _AddGuardianDialogState extends State<AddGuardianDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            var state = context.read<AddGuardianState>();
+
             if (widget.guardian != null && widget.index != null) {
-              context.read<AddGuardianState>().clearControllers();
+              state.clearControllers();
             }
+            Navigator.pop(context);
           },
           child: const Text('Cancelar'),
         ),
         TextButton(
           onPressed: () {
-            if (widget.guardian != null && widget.index != null) {
-              context
-                  .read<AddGuardianState>()
-                  .guardians
-                  .removeAt(widget.index!);
-              context.read<AddGuardianState>().updateGuardian(widget.index!);
-            }
+            try {
+              context.read<AddGuardianState>().validateControllers();
+            } on InvalidInput catch (e) {
+              // Use a Builder widget to ensure the snackbar shows on top of the dialog
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-            context.read<AddGuardianState>().addGuardian();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.message),
+                  backgroundColor: dangerColor,
+                ),
+              );
+              return;
+            }
+            if (widget.guardian != null && widget.index != null) {
+              try{
+              context.read<AddGuardianState>().updateGuardian(widget.index!);
+              } on InvalidInput catch (e) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(e.message),
+                    backgroundColor: dangerColor,
+                  ),
+                );
+                return;
+              }
+            } else {
+              try {
+                context.read<AddGuardianState>().addGuardian();
+              } on InvalidInput catch (e) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(e.message),
+                    backgroundColor: dangerColor,
+                  ),
+                );
+                return;
+              }
+            }
 
             Navigator.pop(context);
           },
@@ -107,6 +142,7 @@ class _PrivateInfoFields extends StatelessWidget {
               children: [
                 const SizedBox(height: 9),
                 SexDropdown(
+                  initialValue: state.currentSexSelected,
                   onChanged: (Sex? value) {
                     state.currentSexSelected = value;
                   },
@@ -156,7 +192,9 @@ class _PrivateInfoFields extends StatelessWidget {
           ],
         ),
         PagadorRadio(
-          onChanged: (value) {},
+          onChanged: (value) {
+            state.isPayer = value == 1;
+          },
         ),
         const _AddressFieds(),
       ],
@@ -186,6 +224,9 @@ class _AddressFieds extends StatelessWidget {
               controller: state.guardianStreetController,
             ),
             MyTextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               isRequired: true,
               label: 'Número *',
               controller: state.guardianNumberController,
@@ -217,7 +258,6 @@ class _AddressFieds extends StatelessWidget {
                 label: 'País *',
                 controller: state.guardianCountryController),
             MyTextField(
-              isRequired: true,
               label: 'Referência',
               controller: state.guardianReferenceController,
             ),

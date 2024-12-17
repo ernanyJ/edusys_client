@@ -66,6 +66,24 @@ class _MyTextFieldState extends State<MyTextField> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  onTapAlwaysCalled: true,
+                  onEditingComplete: () {
+                    if (widget.isRequired) {
+                      if (widget.controller!.text.isEmpty) {
+                        FocusScope.of(context).nextFocus();
+
+                        setState(() {
+                          showWarning = true;
+                        });
+                      } else {
+                        FocusScope.of(context).nextFocus();
+                        setState(() {
+                          showWarning = false;
+                        });
+                      }
+                    }
+                    FocusScope.of(context).nextFocus();
+                  },
                   onTapOutside: (event) {
                     if (widget.isRequired) {
                       if (widget.controller!.text.isEmpty) {

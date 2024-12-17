@@ -1,6 +1,7 @@
 import 'package:edusys_client/data/models/out/address_model_out.dart';
 import 'package:edusys_client/data/models/out/guardian_model_out.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
+import 'package:edusys_client/exceptions/invalid_input.dart';
 import 'package:flutter/material.dart';
 
 class AddGuardianState extends ChangeNotifier {
@@ -15,7 +16,9 @@ class AddGuardianState extends ChangeNotifier {
   TextEditingController guardianPhoneController = TextEditingController();
   TextEditingController guardianSecondaryPhoneController =
       TextEditingController();
+
   bool isPayer = true;
+
   Sex? currentSexSelected;
 
   // ADDRESS INFO:
@@ -31,10 +34,18 @@ class AddGuardianState extends ChangeNotifier {
   TextEditingController guardianReferenceController = TextEditingController();
 
   void addGuardian() {
+    if (guardians.any((e) => e.payer) && isPayer) {
+      throw InvalidInput('Já existe um pagador cadastrado');
+    }
+
     var guardian = GuardianModelOut(
         name: guardianNameController.text,
         cpf: guardianCpfController.text,
-        sex: currentSexSelected ?? Sex.MALE,
+        rg: guardianRgController.text,
+        phone: guardianPhoneController.text,
+        secondPhone: guardianSecondaryPhoneController.text,
+        email: guardianEmailController.text,
+        sex: currentSexSelected!,
         birthDate: guardianBirthDateController.text,
         payer: isPayer,
         address: AddressModelOut(
@@ -95,25 +106,80 @@ class AddGuardianState extends ChangeNotifier {
   }
 
   void updateGuardian(int index) {
-    var guardian = GuardianModelOut(
-        name: guardianNameController.text,
-        cpf: guardianCpfController.text,
-        sex: currentSexSelected ?? Sex.MALE,
-        birthDate: guardianBirthDateController.text,
-        payer: isPayer,
-        address: AddressModelOut(
-            street: guardianStreetController.text,
-            number: guardianNumberController.text,
-            complement: guardianComplementController.text,
-            neighborhood: guardianNeighborhoodController.text,
-            city: guardianCityController.text,
-            state: guardianStateController.text,
-            zipCode: guardianZipCodeController.text,
-            country: guardianCountryController.text,
-            reference: guardianReferenceController.text));
+    if (index >= 0 && index < guardians.length) {
+      if (guardians.any((e) => e.payer)) {
+        throw InvalidInput('Já existe um pagador cadastrado');
+      }
+      guardians[index] = GuardianModelOut(
+          name: guardianNameController.text,
+          rg: guardianRgController.text,
+          phone: guardianPhoneController.text,
+          secondPhone: guardianSecondaryPhoneController.text,
+          email: guardianEmailController.text,
+          cpf: guardianCpfController.text,
+          sex: currentSexSelected ?? Sex.MALE,
+          birthDate: guardianBirthDateController.text,
+          payer: isPayer,
+          address: AddressModelOut(
+              street: guardianStreetController.text,
+              number: guardianNumberController.text,
+              complement: guardianComplementController.text,
+              neighborhood: guardianNeighborhoodController.text,
+              city: guardianCityController.text,
+              state: guardianStateController.text,
+              zipCode: guardianZipCodeController.text,
+              country: guardianCountryController.text,
+              reference: guardianReferenceController.text));
+    }
 
-    guardians.insert(index, guardian);
     clearControllers();
     notifyListeners();
+  }
+
+  void validateControllers() {
+    if (guardianNameController.text.isEmpty ||
+        guardianCpfController.text.isEmpty ||
+        guardianRgController.text.isEmpty ||
+        guardianBirthDateController.text.isEmpty ||
+        guardianEmailController.text.isEmpty ||
+        guardianPhoneController.text.isEmpty ||
+        guardianStreetController.text.isEmpty ||
+        guardianNumberController.text.isEmpty ||
+        guardianComplementController.text.isEmpty ||
+        guardianNeighborhoodController.text.isEmpty ||
+        guardianCityController.text.isEmpty ||
+        guardianStateController.text.isEmpty ||
+        guardianZipCodeController.text.isEmpty ||
+        guardianCountryController.text.isEmpty) {
+      throw InvalidInput(
+          'Preencha os campos são obrigatórios. Campos faltantes: ${getMissingFields()}');
+    }
+  }
+
+  String getMissingFields() {
+    List<String> missingFields = [];
+
+    if (guardianNameController.text.isEmpty) missingFields.add('Nome');
+    if (guardianCpfController.text.isEmpty) missingFields.add('CPF');
+    if (guardianRgController.text.isEmpty) missingFields.add('RG');
+    if (guardianBirthDateController.text.isEmpty) {
+      missingFields.add('Data de Nascimento');
+    }
+    if (guardianEmailController.text.isEmpty) missingFields.add('Email');
+    if (guardianPhoneController.text.isEmpty) missingFields.add('Telefone');
+    if (guardianStreetController.text.isEmpty) missingFields.add('Rua');
+    if (guardianNumberController.text.isEmpty) missingFields.add('Número');
+    if (guardianComplementController.text.isEmpty) {
+      missingFields.add('Complemento');
+    }
+    if (guardianNeighborhoodController.text.isEmpty) {
+      missingFields.add('Bairro');
+    }
+    if (guardianCityController.text.isEmpty) missingFields.add('Cidade');
+    if (guardianStateController.text.isEmpty) missingFields.add('Estado');
+    if (guardianZipCodeController.text.isEmpty) missingFields.add('CEP');
+    if (guardianCountryController.text.isEmpty) missingFields.add('País');
+
+    return missingFields.join(', ');
   }
 }

@@ -11,7 +11,7 @@ class StudentEntity {
   final String cpf;
   final String rg;
   final Sex sex;
-  final String enrollment;
+  final String? enrollment;
   final AddressEntity address;
   final ClassGroupEntity classGroup;
   final List<GuardianEntity> guardians;

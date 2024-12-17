@@ -1,5 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
+import 'package:edusys_client/exceptions/invalid_input.dart';
 import 'package:edusys_client/presentation/contract/widgets/student_add/create_student_dialog_state.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
 import 'package:edusys_client/presentation/widgets/sex_dropdown.dart';
@@ -11,8 +12,8 @@ import 'package:provider/provider.dart';
 double scale = 0.20;
 final GlobalKey<FormState> personalDataFormKey = GlobalKey<FormState>();
 
-class CreateStudentDialog extends StatelessWidget {
-  const CreateStudentDialog({
+class AddStudentDialog extends StatelessWidget {
+  const AddStudentDialog({
     super.key,
   });
 
@@ -32,7 +33,6 @@ class CreateStudentDialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _PersonalData(state),
-                _AcademicData(state),
                 _AddressData(state),
               ],
             ),
@@ -49,6 +49,18 @@ class CreateStudentDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             if (personalDataFormKey.currentState!.validate()) {
+              try {
+                state.validateControllers();
+              } on InvalidInput catch (e) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(e.message),
+                    backgroundColor: dangerColor,
+                  ),
+                );
+                return;
+              }
               state.createStudent();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -185,30 +197,6 @@ class _AddressData extends StatelessWidget {
             ),
           ],
         ),
-      ],
-    );
-  }
-}
-
-class _AcademicData extends StatelessWidget {
-  const _AcademicData(this.state);
-
-  final CreateStudentDialogState state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Dados acadêmicos:',
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor),
-        ),
-        MyTextField(
-            scaleFactor: scale,
-            label: 'Matrícula *',
-            controller: state.enrollmentController),
       ],
     );
   }

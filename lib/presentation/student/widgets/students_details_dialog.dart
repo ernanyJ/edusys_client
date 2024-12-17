@@ -87,7 +87,7 @@ class _StudentsDetailsDialogState extends State<StudentsDetailsDialog> {
                         MyTextField(
                           label: 'Matricula',
                           controller: textController.enrollmentController
-                            ..text = widget.student.enrollment,
+                            ..text = widget.student.enrollment ?? '',
                         ),
                       ],
                     ),
@@ -224,6 +224,9 @@ class _StudentsDetailsDialogState extends State<StudentsDetailsDialog> {
                         ),
                         const SizedBox(width: defaultMainPad),
                         EditButton(() {
+
+
+
                           state.updateStudent(
                               widget.student.id,
                               StudentModelOut(

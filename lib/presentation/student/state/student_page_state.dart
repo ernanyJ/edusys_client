@@ -118,8 +118,8 @@ class StudentPageState extends ChangeNotifier {
         break;
       case 6:
         _students.sort((a, b) => ascending
-            ? a.enrollment.compareTo(b.enrollment)
-            : b.enrollment.compareTo(a.enrollment));
+            ? (a.enrollment as int? ?? 0).compareTo(b.enrollment as int? ?? 0)
+            : (b.enrollment as int? ?? 0).compareTo(a.enrollment as int? ?? 0));
         notifyListeners();
         break;
       default:

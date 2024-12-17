@@ -8,7 +8,7 @@ class StudentModelOut {
   final String cpf;
   final String rg;
   final Sex sex;
-  final String enrollmentId;
+  final String? enrollmentId;
   final Set<int> guardianId;
   final int? classGroupId;
   final AddressModelOut address;

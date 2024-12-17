@@ -12,7 +12,7 @@ class StudentModel {
   final String cpf;
   final String rg;
   final Sex sex;
-  final String enrollment;
+  final String? enrollment;
   final AddressModel address;
   final ClassGroupModel classGroup;
   final List<GuardianModel> guardians;

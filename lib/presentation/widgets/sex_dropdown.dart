@@ -1,3 +1,4 @@
+
 import 'package:edusys_client/enums/sex_enum.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,10 @@ class SexDropdown extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium),
               );
             }).toList(),
-            onChanged: onChanged,
+            onChanged: (v) => {
+              onChanged(v),
+              FocusScope.of(context).nextFocus(),
+            },
           ),
         ],
       ),
