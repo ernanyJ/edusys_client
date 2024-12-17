@@ -182,4 +182,34 @@ class AddGuardianState extends ChangeNotifier {
 
     return missingFields.join(', ');
   }
+
+  void removeGuardian(int index, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Exclusão'),
+          content: Text('Você realmente deseja excluir este responsável?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Excluir'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (index >= 0 && index < guardians.length) {
+                  guardians.removeAt(index);
+                  notifyListeners();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

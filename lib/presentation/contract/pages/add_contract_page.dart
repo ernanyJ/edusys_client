@@ -174,7 +174,10 @@ class ContractAddPage extends StatelessWidget {
                         subtitle: Text(guardian.cpf),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete),
-                          onPressed: () {},
+                          onPressed: () {
+
+                            context.read<AddGuardianState>().removeGuardian(index, context);
+                          },
                         ),
                       );
                     },
