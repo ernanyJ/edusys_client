@@ -66,8 +66,8 @@ class _AddGuardianDialogState extends State<AddGuardianDialog> {
               return;
             }
             if (widget.guardian != null && widget.index != null) {
-              try{
-              context.read<AddGuardianState>().updateGuardian(widget.index!);
+              try {
+                context.read<AddGuardianState>().updateGuardian(widget.index!);
               } on InvalidInput catch (e) {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -102,9 +102,14 @@ class _AddGuardianDialogState extends State<AddGuardianDialog> {
   }
 }
 
-class _PrivateInfoFields extends StatelessWidget {
+class _PrivateInfoFields extends StatefulWidget {
   const _PrivateInfoFields();
 
+  @override
+  State<_PrivateInfoFields> createState() => _PrivateInfoFieldsState();
+}
+
+class _PrivateInfoFieldsState extends State<_PrivateInfoFields> {
   @override
   Widget build(BuildContext context) {
     final state = Provider.of<AddGuardianState>(context);
@@ -192,8 +197,11 @@ class _PrivateInfoFields extends StatelessWidget {
           ],
         ),
         PagadorRadio(
+          payer: state.isPayer ? 1 : 0,
           onChanged: (value) {
-            state.isPayer = value == 1;
+            setState(() {
+              state.isPayer = value == 1;
+            });
           },
         ),
         const _AddressFieds(),
@@ -272,14 +280,14 @@ class PagadorRadio extends StatefulWidget {
   @override
   State<PagadorRadio> createState() => _PagadorRadioState();
 
+  final Object? payer;
+
   final ValueChanged<Object?> onChanged;
 
-  const PagadorRadio({super.key, required this.onChanged});
+  const PagadorRadio({super.key, required this.onChanged, required this.payer});
 }
 
 class _PagadorRadioState extends State<PagadorRadio> {
-  Object? payer = 1;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -292,25 +300,20 @@ class _PagadorRadioState extends State<PagadorRadio> {
         Row(
           children: [
             Radio(
-                activeColor: primaryColor,
-                value: 1,
-                groupValue: payer,
-                onChanged: (value) {
-                  widget.onChanged(value);
-                  setState(() {
-                    payer = value;
-                  });
-                }),
+              activeColor: primaryColor,
+              value: 1,
+              groupValue: widget.payer,
+              onChanged: (value) {
+                widget.onChanged(value);
+              },
+            ),
             const Text('Sim'),
             Radio(
                 activeColor: primaryColor,
                 value: 0,
-                groupValue: payer,
+                groupValue: widget.payer,
                 onChanged: (value) {
                   widget.onChanged(value);
-                  setState(() {
-                    payer = value;
-                  });
                 }),
             const Text('Não'),
           ],

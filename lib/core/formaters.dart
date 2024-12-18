@@ -1,4 +1,5 @@
 import 'package:edusys_client/domain/entities/address_entity.dart';
+import 'package:edusys_client/exceptions/invalid_input.dart';
 
 String formatDate(DateTime? date) {
   if (date == null) return '';
@@ -27,4 +28,10 @@ String formatDay(DateTime date) {
     return '0${date.day}';
   }
   return '${date.day}';
+}
+
+DateTime parseDate(String date) {
+  final dateParts = date.split('/');
+  if(dateParts.length != 3) throw InvalidInput('Data inválida');
+  return DateTime(int.parse(dateParts[2]), int.parse(dateParts[1]), int.parse(dateParts[0]));
 }

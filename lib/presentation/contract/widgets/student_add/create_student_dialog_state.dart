@@ -18,16 +18,18 @@ class CreateStudentDialogState extends ChangeNotifier {
   TextEditingController streetController = TextEditingController();
   TextEditingController numberController = TextEditingController();
   TextEditingController neighborhoodController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController stateController = TextEditingController();
+  TextEditingController cityController = TextEditingController()..text = 'Boa Vista';
+  TextEditingController stateController = TextEditingController()..text = 'Roraima';
   TextEditingController zipCodeController = TextEditingController();
   TextEditingController complementController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
+  TextEditingController countryController = TextEditingController()..text = 'Brasil';
   TextEditingController referenceController = TextEditingController();
 
   late Sex? sex;
 
   StudentModelOut? currentStudent;
+
+  var formKey = GlobalKey<FormState>();
 
   void createStudent() {
     currentStudent = StudentModelOut(

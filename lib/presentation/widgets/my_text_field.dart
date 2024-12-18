@@ -17,6 +17,7 @@ class MyTextField extends StatefulWidget {
     this.readOnly = false,
     this.suffix,
     this.isRequired = false,
+    this.validation,
   });
 
   final String label;
@@ -31,14 +32,13 @@ class MyTextField extends StatefulWidget {
   final Widget? suffix;
   final Widget? suffixIcon;
   final bool isRequired;
+  final String? Function(String?)? validation;
 
   @override
   State<MyTextField> createState() => _MyTextFieldState();
 }
 
 class _MyTextFieldState extends State<MyTextField> {
-  bool showWarning = false;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -65,40 +65,15 @@ class _MyTextFieldState extends State<MyTextField> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextField(
+                TextFormField(
+                  key: widget.key,
+                  validator: widget.validation ?? (value) {
+                    if (widget.isRequired && value!.isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    return null;
+                  },
                   onTapAlwaysCalled: true,
-                  onEditingComplete: () {
-                    if (widget.isRequired) {
-                      if (widget.controller!.text.isEmpty) {
-                        FocusScope.of(context).nextFocus();
-
-                        setState(() {
-                          showWarning = true;
-                        });
-                      } else {
-                        FocusScope.of(context).nextFocus();
-                        setState(() {
-                          showWarning = false;
-                        });
-                      }
-                    }
-                    FocusScope.of(context).nextFocus();
-                  },
-                  onTapOutside: (event) {
-                    if (widget.isRequired) {
-                      if (widget.controller!.text.isEmpty) {
-                        setState(() {
-                          showWarning = true;
-                        });
-                      } else {
-                        FocusScope.of(context).unfocus();
-                        setState(() {
-                          showWarning = false;
-                        });
-                      }
-                    }
-                    FocusScope.of(context).unfocus();
-                  },
                   readOnly: widget.readOnly,
                   cursorColor: primaryColor,
                   keyboardType: TextInputType.number,
@@ -117,13 +92,6 @@ class _MyTextFieldState extends State<MyTextField> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(color: neutralColor)),
-                  ),
-                ),
-                Visibility(
-                  visible: showWarning,
-                  child: Text(
-                    'Campo obrigatório!',
-                    style: TextStyle(color: dangerColor),
                   ),
                 ),
               ],

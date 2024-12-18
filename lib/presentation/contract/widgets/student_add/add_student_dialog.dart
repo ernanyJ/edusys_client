@@ -10,7 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 double scale = 0.20;
-final GlobalKey<FormState> personalDataFormKey = GlobalKey<FormState>();
+
+final formKey = GlobalKey<FormState>();
+final addressKey = GlobalKey<FormState>();
 
 class AddStudentDialog extends StatelessWidget {
   const AddStudentDialog({
@@ -48,27 +50,23 @@ class AddStudentDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            if (personalDataFormKey.currentState!.validate()) {
-              try {
-                state.validateControllers();
-              } on InvalidInput catch (e) {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(e.message),
-                    backgroundColor: dangerColor,
-                  ),
-                );
-                return;
-              }
-              state.createStudent();
-            } else {
+            formKey.currentState!.validate();
+            addressKey.currentState!.validate();
+
+            try {
+              state.validateControllers();
+            } on InvalidInput catch (e) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text(
-                        'Por favor, preencha todos os campos obrigatórios')),
+                SnackBar(
+                  content: Text(e.message),
+                  backgroundColor: dangerColor,
+                ),
               );
+              return;
             }
+
+            state.createStudent();
             Navigator.of(context).pop();
           },
           child: const Text('Salvar'),
@@ -94,16 +92,23 @@ class _PersonalData extends StatelessWidget {
               fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor),
         ),
         Form(
-          key: personalDataFormKey,
+          key: formKey,
           child: Wrap(
             alignment: WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.start,
             children: [
               MyTextField(
+                  validation: (p0) {
+                    if (p0 == null || p0.isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    return null;
+                  },
                   scaleFactor: scale,
                   label: 'Nome *',
                   controller: state.nameController),
               MyTextField(
+                isRequired: true,
                 scaleFactor: scale,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -113,10 +118,12 @@ class _PersonalData extends StatelessWidget {
                 controller: state.cpfController,
               ),
               MyTextField(
+                  isRequired: true,
                   scaleFactor: scale,
                   label: 'RG *',
                   controller: state.rgController),
               MyTextField(
+                isRequired: true,
                 scaleFactor: scale,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -159,43 +166,60 @@ class _AddressData extends StatelessWidget {
           style: TextStyle(
               fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor),
         ),
-        Wrap(
-          children: [
-            MyTextField(
-              label: 'Rua *',
-              controller: state.streetController,
-            ),
-            MyTextField(
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              label: 'Número *',
-              controller: state.numberController,
-            ),
-            MyTextField(
-              label: 'Complemento *',
-              controller: state.complementController,
-            ),
-            MyTextField(
-              label: 'Bairro *',
-              controller: state.neighborhoodController,
-            ),
-            MyTextField(label: 'Cidade *', controller: state.cityController),
-            MyTextField(label: 'Estado *', controller: state.stateController),
-            MyTextField(
-              inputFormatters: [
-                CepInputFormatter(),
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              label: 'CEP *',
-              controller: state.zipCodeController,
-            ),
-            MyTextField(label: 'País *', controller: state.countryController),
-            MyTextField(
-              label: 'Referência',
-              controller: state.referenceController,
-            ),
-          ],
+        Form(
+          key: addressKey,
+          child: Wrap(
+            children: [
+              MyTextField(
+                isRequired: true,
+                label: 'Rua *',
+                controller: state.streetController,
+              ),
+              MyTextField(
+                isRequired: true,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                label: 'Número *',
+                controller: state.numberController,
+              ),
+              MyTextField(
+                isRequired: true,
+                label: 'Complemento *',
+                controller: state.complementController,
+              ),
+              MyTextField(
+                isRequired: true,
+                label: 'Bairro *',
+                controller: state.neighborhoodController,
+              ),
+              MyTextField(
+                  isRequired: true,
+                  label: 'Cidade *',
+                  controller: state.cityController),
+              MyTextField(
+                  isRequired: true,
+                  label: 'Estado *',
+                  controller: state.stateController),
+              MyTextField(
+                isRequired: true,
+                inputFormatters: [
+                  CepInputFormatter(),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                label: 'CEP *',
+                controller: state.zipCodeController,
+              ),
+              MyTextField(
+                  isRequired: true,
+                  label: 'País *',
+                  controller: state.countryController),
+              MyTextField(
+                label: 'Referência',
+                controller: state.referenceController,
+              ),
+            ],
+          ),
         ),
       ],
     );

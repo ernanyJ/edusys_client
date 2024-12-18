@@ -1,12 +1,14 @@
 import 'package:edusys_client/presentation/configuration/configuration_page.dart';
 import 'package:edusys_client/presentation/contract/contract_page.dart';
-import 'package:edusys_client/presentation/contract/pages/add_contract_page.dart';
+import 'package:edusys_client/presentation/contract/pages/add_contract/add_contract_page.dart';
+import 'package:edusys_client/presentation/contract/pages/add_contract/add_contract_page_state.dart';
 import 'package:edusys_client/presentation/guardian/guardian_page.dart';
 import 'package:edusys_client/presentation/home_page.dart';
 import 'package:edusys_client/presentation/student/add_%20student/add_student_page.dart';
 import 'package:edusys_client/presentation/student/students_page.dart';
 import 'package:edusys_client/presentation/widgets/view_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 // GoRouter configuration
 final appRouter = GoRouter(
@@ -37,7 +39,9 @@ final appRouter = GoRouter(
             routes: [
               GoRoute(
                   path: 'add',
-                  builder: (context, state) => const ContractAddPage())
+                  builder: (context, state) => ChangeNotifierProvider(
+                    create: (context) => AddContractPageState(),
+                    child: const ContractAddPage()))
             ]),
         GoRoute(
           path: '/guardian',

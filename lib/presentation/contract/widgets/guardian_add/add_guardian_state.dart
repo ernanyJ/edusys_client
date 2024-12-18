@@ -27,10 +27,13 @@ class AddGuardianState extends ChangeNotifier {
   TextEditingController guardianComplementController = TextEditingController();
   TextEditingController guardianNeighborhoodController =
       TextEditingController();
-  TextEditingController guardianCityController = TextEditingController();
-  TextEditingController guardianStateController = TextEditingController();
+  TextEditingController guardianCityController = TextEditingController()
+    ..text = 'Boa Vista';
+  TextEditingController guardianStateController = TextEditingController()
+    ..text = 'Roraima';
   TextEditingController guardianZipCodeController = TextEditingController();
-  TextEditingController guardianCountryController = TextEditingController();
+  TextEditingController guardianCountryController = TextEditingController()
+    ..text = 'Brasil';
   TextEditingController guardianReferenceController = TextEditingController();
 
   void addGuardian() {
@@ -39,25 +42,26 @@ class AddGuardianState extends ChangeNotifier {
     }
 
     var guardian = GuardianModelOut(
-        name: guardianNameController.text,
-        cpf: guardianCpfController.text,
-        rg: guardianRgController.text,
-        phone: guardianPhoneController.text,
-        secondPhone: guardianSecondaryPhoneController.text,
-        email: guardianEmailController.text,
-        sex: currentSexSelected!,
-        birthDate: guardianBirthDateController.text,
-        payer: isPayer,
-        address: AddressModelOut(
-            street: guardianStreetController.text,
-            number: guardianNumberController.text,
-            complement: guardianComplementController.text,
-            neighborhood: guardianNeighborhoodController.text,
-            city: guardianCityController.text,
-            state: guardianStateController.text,
-            zipCode: guardianZipCodeController.text,
-            country: guardianCountryController.text,
-            reference: guardianReferenceController.text));
+      name: guardianNameController.text,
+      cpf: guardianCpfController.text,
+      rg: guardianRgController.text,
+      phone: guardianPhoneController.text,
+      secondPhone: guardianSecondaryPhoneController.text,
+      email: guardianEmailController.text,
+      sex: currentSexSelected!,
+      birthDate: guardianBirthDateController.text,
+      payer: isPayer,
+      address: AddressModelOut(
+          street: guardianStreetController.text,
+          number: guardianNumberController.text,
+          complement: guardianComplementController.text,
+          neighborhood: guardianNeighborhoodController.text,
+          city: guardianCityController.text,
+          state: guardianStateController.text,
+          zipCode: guardianZipCodeController.text,
+          country: guardianCountryController.text,
+          reference: guardianReferenceController.text),
+    );
 
     guardians.add(guardian);
     clearControllers();
@@ -106,8 +110,8 @@ class AddGuardianState extends ChangeNotifier {
   }
 
   void updateGuardian(int index) {
-    if (index >= 0 && index < guardians.length) {
-      if (guardians.any((e) => e.payer)) {
+    if ((index >= 0 && index < guardians.length) ) {
+      if (guardians.any((e) => e.payer) && isPayer && !guardians[index].payer) {
         throw InvalidInput('Já existe um pagador cadastrado');
       }
       guardians[index] = GuardianModelOut(
