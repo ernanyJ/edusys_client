@@ -13,7 +13,7 @@ class StudentEntity {
   final Sex sex;
   final String? enrollment;
   final AddressEntity address;
-  final ClassGroupEntity classGroup;
+  final ClassGroupEntity? classGroup;
   final List<GuardianEntity> guardians;
   final TuitionFeeStatus? currentMonthPaid;
 

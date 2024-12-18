@@ -14,7 +14,7 @@ class StudentModel {
   final Sex sex;
   final String? enrollment;
   final AddressModel address;
-  final ClassGroupModel classGroup;
+  final ClassGroupModel? classGroup;
   final List<GuardianModel> guardians;
   final TuitionFeeStatus? currentMonthPaid;
 
@@ -42,10 +42,11 @@ class StudentModel {
         rg: json['rg'] as String,
         sex: Sex.values
             .firstWhere((e) => e.toString().split('.').last == json['sex']),
-        enrollment: json['enrollment'] as String,
+        enrollment: json['enrollment'] as String?,
         address: AddressModel.fromJson(json['address'] as Map<String, dynamic>),
-        classGroup: ClassGroupModel.fromJson(
-            json['classGroup'] as Map<String, dynamic>),
+        classGroup: json['classGroup'] != null
+            ? ClassGroupModel.fromJson(json['classGroup'] as Map<String, dynamic>)
+            : null,
         guardians: (json['guardians'] as List)
             .map((item) => GuardianModel.fromJson(item as Map<String, dynamic>))
             .toList(),

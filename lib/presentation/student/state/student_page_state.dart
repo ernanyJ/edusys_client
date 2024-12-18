@@ -95,8 +95,8 @@ class StudentPageState extends ChangeNotifier {
         break;
       case 2:
         _students.sort((a, b) => ascending
-            ? a.classGroup.room.compareTo(b.classGroup.room)
-            : b.classGroup.room.compareTo(a.classGroup.room));
+            ? (a.classGroup?.room ?? '').compareTo(b.classGroup?.room ?? '')
+            : (b.classGroup?.room ?? '').compareTo(a.classGroup?.room ?? ''));
         notifyListeners();
         break;
       case 3:

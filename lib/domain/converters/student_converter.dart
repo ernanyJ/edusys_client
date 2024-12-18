@@ -22,7 +22,7 @@ class StudentConverter extends Converter<StudentModel, StudentEntity> {
       rg: input.rg,
       sex: input.sex,
       enrollment: input.enrollment,
-      classGroup: classGroupConverter.convert(input.classGroup),
+      classGroup: input.classGroup != null ? classGroupConverter.convert(input.classGroup!) : null,
       guardians:
           input.guardians.map((e) => guardianConverter.convert(e)).toList(),
       currentMonthPaid: input.currentMonthPaid,

@@ -181,7 +181,7 @@ class _StudentsPageState extends State<StudentsPage> {
                                         },
                                       ),
                                     ),
-                                    DataCell(Text(student.classGroup.room)),
+                                    DataCell(Text(student.classGroup?.room ?? 'Não atribuído')),
                                     DataCell(Text(
                                       student.currentMonthPaid?.value ??
                                           'Não possui',

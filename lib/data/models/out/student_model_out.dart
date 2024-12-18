@@ -47,7 +47,7 @@ class StudentModelOut {
         sex: entity.sex,
         enrollmentId: entity.enrollment,
         guardianId: entity.guardians.map((e) => e.id).toSet(),
-        classGroupId: entity.classGroup.id,
+        classGroupId: entity.classGroup?.id,
         address: AddressModelOut(
             street: entity.address.street,
             city: entity.address.city,
