@@ -171,6 +171,7 @@ class _PrivateInfoFieldsState extends State<_PrivateInfoFields> {
                 controller: state.guardianBirthDateController),
             MyTextField(
                 isRequired: true,
+                validation: (p0) => p0!.contains('@') ? null : 'Insira um e-mail válido.',
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@._-]')),
                 ],

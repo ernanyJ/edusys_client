@@ -5,11 +5,11 @@ import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/exceptions/cpf_exception.dart';
 
 class StudentDatasource extends BaseDatasource {
-  Future<List<StudentModel>> getStudents() async {
+  Future<List<StudentModelIn>> getStudents() async {
     try {
       final response = await dio.get('/student');
       return (response.data as List)
-          .map((e) => StudentModel.fromJson(e))
+          .map((e) => StudentModelIn.fromJson(e))
           .toList();
     } on DioException catch (e) {
       // Trata erros de forma específica
@@ -26,10 +26,10 @@ class StudentDatasource extends BaseDatasource {
     }
   }
 
-  Future<StudentModel> updateStudent(int id, StudentModelOut student) async {
+  Future<StudentModelIn> updateStudent(int id, StudentModelOut student) async {
     try {
       final response = await dio.put('/student/$id', data: student.toJson());
-      return StudentModel.fromJson(response.data);
+      return StudentModelIn.fromJson(response.data);
     } on DioException catch (e) {
       if (e.response.toString().contains('CPF')) {
         throw CpfException('CPF Inválido.');

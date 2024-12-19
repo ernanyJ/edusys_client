@@ -7,7 +7,7 @@ class ContractModel {
   final DateTime? startDate;
   final DateTime? endDate;
   final ContractStatusEnum status;
-  final StudentModel student;
+  final StudentModelIn student;
   final GuardianModel guardian;
 
   ContractModel(
@@ -25,7 +25,7 @@ class ContractModel {
       endDate: DateTime.parse(json['endDate']),
       status: ContractStatusEnum.values.firstWhere(
           (e) => e.toString().split('.').last == json['status']),
-      student: StudentModel.fromJson(json['student']),
+      student: StudentModelIn.fromJson(json['student']),
       guardian: GuardianModel.fromJson(json['guardian']),
     );
   }

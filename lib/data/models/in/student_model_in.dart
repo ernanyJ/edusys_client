@@ -5,7 +5,7 @@ import 'package:edusys_client/enums/tuition_fee_status.dart';
 
 import 'address_model_in.dart';
 
-class StudentModel {
+class StudentModelIn {
   final int id;
   final String name;
   final DateTime birthDate;
@@ -18,7 +18,7 @@ class StudentModel {
   final List<GuardianModel> guardians;
   final TuitionFeeStatus? currentMonthPaid;
 
-  StudentModel({
+  StudentModelIn({
     required this.id,
     required this.name,
     required this.birthDate,
@@ -33,8 +33,8 @@ class StudentModel {
   });
 
   // Método para converter de JSON para StudentModel
-  factory StudentModel.fromJson(Map<String, dynamic> json) {
-    return StudentModel(
+  factory StudentModelIn.fromJson(Map<String, dynamic> json) {
+    return StudentModelIn(
         id: json['id'] as int,
         name: json['name'] as String,
         birthDate: DateTime.parse(json['birthDate'] as String),

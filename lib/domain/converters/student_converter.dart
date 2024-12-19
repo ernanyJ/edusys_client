@@ -6,13 +6,13 @@ import 'package:edusys_client/domain/converters/class_group_converter.dart';
 import 'package:edusys_client/domain/converters/guardian_converter.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
 
-class StudentConverter extends Converter<StudentModel, StudentEntity> {
+class StudentConverter extends Converter<StudentModelIn, StudentEntity> {
   final AddressConverter addressConverter = AddressConverter();
   final ClassGroupConverter classGroupConverter = ClassGroupConverter();
   final GuardianConverter guardianConverter = GuardianConverter();
 
   @override
-  StudentEntity convert(StudentModel input) {
+  StudentEntity convert(StudentModelIn input) {
     return StudentEntity(
       id: input.id,
       name: input.name,
