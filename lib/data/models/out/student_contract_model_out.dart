@@ -21,7 +21,7 @@ class StudentContractModelOut {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'birthDate': birthDate,
+      'birthDate': birthDate.toIso8601String().split('T').first,
       'cpf': cpf,
       'rg': rg,
       'sex': sex.toString().split('.').last,

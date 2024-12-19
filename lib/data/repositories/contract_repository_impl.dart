@@ -1,4 +1,5 @@
 import 'package:edusys_client/data/datasources/contract_datasource.dart';
+import 'package:edusys_client/data/models/out/contract_model_out.dart';
 import 'package:edusys_client/domain/converters/contract_converter.dart';
 import 'package:edusys_client/domain/entities/contract_entity.dart';
 import 'package:edusys_client/domain/repositories/contract_repository.dart';
@@ -12,5 +13,12 @@ class ContractRepositoryImpl implements ContractRepository {
   Future<List<ContractEntity>> getContracts() {
     return contractDatasource.getContracts().then((e) => e.map((e) => inConverter.convert(e)).toList());
   }
+
+  @override
+  Future<void> addContract(ContractModelOut contract) {
+    return contractDatasource.addContract(contract);
+  }
+
+  
   
 }

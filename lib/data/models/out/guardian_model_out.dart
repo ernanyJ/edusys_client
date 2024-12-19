@@ -6,7 +6,7 @@ class GuardianModelOut {
   final String cpf;
   final String? rg;
   final Sex sex;
-  final String birthDate;
+  final DateTime birthDate;
   final bool payer;
   final String? phone;
   final String? secondPhone;
@@ -33,7 +33,7 @@ class GuardianModelOut {
       'cpf': cpf,
       'rg': rg,
       'sex': sex.toString().split('.').last,
-      'birthDate': birthDate,
+      'birthDate': birthDate.toIso8601String(),
       'payer': payer,
       'phone': phone,
       'secondPhone': secondPhone,

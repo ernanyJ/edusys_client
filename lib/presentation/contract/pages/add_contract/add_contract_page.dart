@@ -36,7 +36,19 @@ class ContractAddPage extends StatelessWidget {
 
           if (contractDataKey.currentState!.validate()) {
             try {
-              context.read<AddContractPageState>().validateData(context);
+              var contractState = context.read<AddContractPageState>();
+              
+              contractState.validateData(context);
+
+              // ENVIAR
+              var guardiansState = context.read<AddGuardianState>();
+              var studentState = context.read<CreateStudentDialogState>();
+
+              var guardians = guardiansState.guardians.toSet();
+              var student = studentState.currentStudent;
+              
+              contractState.addContract(guardians, student);
+
 
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -115,7 +127,7 @@ class ContractAddPage extends StatelessWidget {
                           CentavosInputFormatter(),
                         ],
                         scaleFactor: 0.22,
-                        label: 'Valor da mensalidade *',
+                        label: 'Valores *',
                         isRequired: true,
                         controller: state.monthlyValueController,
                       ),
@@ -129,6 +141,16 @@ class ContractAddPage extends StatelessWidget {
                         scaleFactor: 0.22,
                         label: 'Porcentagem de desconto *',
                         controller: state.discountController,
+                      ),
+                        MyTextField(
+                        suffix: const Text('%'),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^(?:[1-9]|[12][0-9]|3[01])$')),
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        scaleFactor: 0.22,
+                        label: 'Dia de cobrança *',
+                        controller: state.dueDayController,
                       ),
                     ],
                   ),

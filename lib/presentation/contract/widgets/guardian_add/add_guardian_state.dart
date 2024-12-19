@@ -1,3 +1,4 @@
+import 'package:edusys_client/core/formaters.dart';
 import 'package:edusys_client/data/models/out/address_model_out.dart';
 import 'package:edusys_client/data/models/out/guardian_model_out.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
@@ -49,7 +50,7 @@ class AddGuardianState extends ChangeNotifier {
       secondPhone: guardianSecondaryPhoneController.text,
       email: guardianEmailController.text,
       sex: currentSexSelected!,
-      birthDate: guardianBirthDateController.text,
+      birthDate: parseDate(guardianBirthDateController.text),
       payer: isPayer,
       address: AddressModelOut(
           street: guardianStreetController.text,
@@ -91,7 +92,7 @@ class AddGuardianState extends ChangeNotifier {
     guardianNameController.text = guardian?.name ?? '';
     guardianCpfController.text = guardian?.cpf ?? '';
     guardianRgController.text = guardian?.rg ?? '';
-    guardianBirthDateController.text = guardian?.birthDate ?? '';
+    guardianBirthDateController.text = formatDate(guardian?.birthDate);
     guardianEmailController.text = guardian?.email ?? '';
     guardianPhoneController.text = guardian?.phone ?? '';
     guardianSecondaryPhoneController.text = guardian?.secondPhone ?? '';
@@ -110,7 +111,7 @@ class AddGuardianState extends ChangeNotifier {
   }
 
   void updateGuardian(int index) {
-    if ((index >= 0 && index < guardians.length) ) {
+    if ((index >= 0 && index < guardians.length)) {
       if (guardians.any((e) => e.payer) && isPayer && !guardians[index].payer) {
         throw InvalidInput('Já existe um pagador cadastrado');
       }
@@ -122,7 +123,7 @@ class AddGuardianState extends ChangeNotifier {
           email: guardianEmailController.text,
           cpf: guardianCpfController.text,
           sex: currentSexSelected ?? Sex.MALE,
-          birthDate: guardianBirthDateController.text,
+          birthDate: parseDate(guardianBirthDateController.text),
           payer: isPayer,
           address: AddressModelOut(
               street: guardianStreetController.text,

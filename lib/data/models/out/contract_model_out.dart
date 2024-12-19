@@ -22,10 +22,10 @@ class ContractModelOut {
 
   Map<String, dynamic> toJson() {
     return {
-      'startDate': startDate,
-      'endDate': endDate,
+      'startDate': startDate.toIso8601String().split('T').first,
+      'endDate': endDate.toIso8601String().split('T').first,
       'student': student.toJson(),
-      'guardians': guardians.map((e) => e.toJson()).toList(),
+      'guardians': guardians.toList().map((e) => e.toJson()).toList(),
       'feeValue': feeValue,
       'discountPercentage': discountPercentage,
       'dueDay': dueDay,
