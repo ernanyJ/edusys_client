@@ -49,7 +49,7 @@ class AddContractPageState extends ChangeNotifier {
       dueDay: int.parse(dueDayController.text),
     );
 
-    // save contract
+    // save contractw
     repository.addContract(contract);
   }
 }

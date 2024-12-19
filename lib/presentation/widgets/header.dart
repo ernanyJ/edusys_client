@@ -64,6 +64,14 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
             'Contrato',
           ),
         ),
+         TextButton(
+          onPressed: () {
+            context.go('/class-group'); 
+          },
+          child: const Text(
+            'Turmas',
+          ),
+        ),
         TextButton(
           onPressed: () {},
           child: const Text(

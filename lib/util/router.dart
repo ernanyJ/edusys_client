@@ -1,3 +1,4 @@
+import 'package:edusys_client/presentation/class_group/class_group_page.dart';
 import 'package:edusys_client/presentation/configuration/configuration_page.dart';
 import 'package:edusys_client/presentation/contract/contract_page.dart';
 import 'package:edusys_client/presentation/contract/pages/add_contract/add_contract_page.dart';
@@ -46,6 +47,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/guardian',
           builder: (context, state) => const GuardianPage(),
+        ),
+          GoRoute(
+          path: '/class-group',
+          builder: (context, state) => const ClassGroupPage(),
         ),
         GoRoute(
             path: '/configurations',
