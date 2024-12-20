@@ -9,7 +9,7 @@ class GuardianPageState extends ChangeNotifier {
   LoadingState _loadingState = LoadingState.LOADING;
   LoadingState get loadingState => _loadingState;
 
-  Future<void> loadGuardians(BuildContext context) async {
+  Future<void> loadGuardians() async {
     guardians = [];
     notifyListeners();
 
@@ -21,16 +21,7 @@ class GuardianPageState extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _loadingState = LoadingState.ERROR;
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              e.toString(),
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      notifyListeners();
     }
   }
 }

@@ -44,10 +44,21 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
         TextButton(
           onPressed: () {
-            guardianState.guardians.isEmpty
-                ? guardianState.loadGuardians(context)
-                : null;
-            context.go('/guardian');
+            if (guardianState.guardians.isEmpty) {
+              try {
+                guardianState.loadGuardians();
+                context.go('/guardian');
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      e.toString(),
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            }
           },
           child: const Text(
             'Responsáveis',
@@ -64,9 +75,9 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
             'Contrato',
           ),
         ),
-         TextButton(
+        TextButton(
           onPressed: () {
-            context.go('/class-group'); 
+            context.go('/class-group');
           },
           child: const Text(
             'Turmas',

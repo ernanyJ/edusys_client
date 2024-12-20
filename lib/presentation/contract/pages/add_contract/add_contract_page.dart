@@ -37,7 +37,7 @@ class ContractAddPage extends StatelessWidget {
           if (contractDataKey.currentState!.validate()) {
             try {
               var contractState = context.read<AddContractPageState>();
-              
+
               contractState.validateData(context);
 
               // ENVIAR
@@ -46,9 +46,8 @@ class ContractAddPage extends StatelessWidget {
 
               var guardians = guardiansState.guardians.toSet();
               var student = studentState.currentStudent;
-              
-              contractState.addContract(guardians, student);
 
+              contractState.addContract(guardians, student);
 
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -57,6 +56,9 @@ class ContractAddPage extends StatelessWidget {
                   backgroundColor: successColor,
                 ),
               );
+              Navigator.of(context).pop();
+              guardiansState.clearControllers();
+              studentState.clear();
             } on InvalidInput catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -142,10 +144,11 @@ class ContractAddPage extends StatelessWidget {
                         label: 'Porcentagem de desconto *',
                         controller: state.discountController,
                       ),
-                        MyTextField(
-                        suffix: const Text('%'),
+                      MyTextField(
+                        suffixIcon: const Icon(Icons.calendar_today),
                         inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'^(?:[1-9]|[12][0-9]|3[01])$')),
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^(?:[1-9]|[12][0-9]|3[01])$')),
                           FilteringTextInputFormatter.digitsOnly,
                         ],
                         scaleFactor: 0.22,

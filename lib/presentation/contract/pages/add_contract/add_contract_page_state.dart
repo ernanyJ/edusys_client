@@ -45,7 +45,8 @@ class AddContractPageState extends ChangeNotifier {
       startDate: parseDate(beginDateController.text),
       endDate: parseDate(endDateController.text),
       discountPercentage: double.parse(discountController.text),
-      feeValue: double.parse(monthlyValueController.text.replaceAll(',', '.')),
+      feeValue: double.parse(
+          monthlyValueController.text.replaceAll('.', '').replaceAll(',', '.')),
       dueDay: int.parse(dueDayController.text),
     );
 

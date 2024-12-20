@@ -25,7 +25,7 @@ class _GuardianPageState extends State<GuardianPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                  onPressed: () => state.loadGuardians(context),
+                  onPressed: () => state.loadGuardians(),
                   child: const Text('Recarregar lista')),
             ],
           ),
