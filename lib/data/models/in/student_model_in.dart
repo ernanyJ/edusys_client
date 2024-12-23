@@ -14,7 +14,7 @@ class StudentModelIn {
   final Sex sex;
   final String? enrollment;
   final AddressModel address;
-  final ClassGroupModel? classGroup;
+  final ClassGroupModelIn? classGroup;
   final List<GuardianModel> guardians;
   final TuitionFeeStatus? currentMonthPaid;
 
@@ -45,7 +45,7 @@ class StudentModelIn {
         enrollment: json['enrollment'] as String?,
         address: AddressModel.fromJson(json['address'] as Map<String, dynamic>),
         classGroup: json['classGroup'] != null
-            ? ClassGroupModel.fromJson(json['classGroup'] as Map<String, dynamic>)
+            ? ClassGroupModelIn.fromJson(json['classGroup'] as Map<String, dynamic>)
             : null,
         guardians: (json['guardians'] as List)
             .map((item) => GuardianModel.fromJson(item as Map<String, dynamic>))

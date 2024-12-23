@@ -45,4 +45,18 @@ class StudentDatasource extends BaseDatasource {
   Future<int> countDebts() {
     return dio.get('/student/with-debts').then((e) => e.data);
   }
+
+  Future<List<StudentModelIn>> getStudentsByClassGroup(int classGroupId) {
+    return dio.get('/student/class-group/$classGroupId').then((e) =>
+        (e.data as List).map((e) => StudentModelIn.fromJson(e)).toList());
+  }
+
+  Future<void> updateStudentClass(int id, int classId) {
+    var response = dio.patch('/student/$id/class-group/$classId').then((e) => {
+          if (e.statusCode != 200)
+            throw Exception('Failed to update student class group')
+        });
+
+    return response;
+  }
 }

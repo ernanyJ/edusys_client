@@ -1,0 +1,4 @@
+enum ClassGroupType {
+  ELEMENTARY,
+  CRECHE
+}

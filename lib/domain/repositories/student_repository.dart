@@ -11,4 +11,8 @@ abstract interface class StudentRepository {
   Future<int> countStudents();
 
   Future<int> countDebts(); 
+
+  Future<List<StudentEntity>> getStudentsByClassGroup(int id);
+
+  Future<void> updateStudentClass(int id, int classId);
 }

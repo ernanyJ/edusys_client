@@ -1,11 +1,33 @@
+import 'package:edusys_client/presentation/class_group/class_group_page_state.dart';
+import 'package:edusys_client/presentation/class_group/widgets/class_group_card_widget.dart';
 import 'package:edusys_client/util/consts.dart';
+import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ClassGroupPage extends StatelessWidget {
+class ClassGroupPage extends StatefulWidget {
   const ClassGroupPage({super.key});
 
   @override
+  State<ClassGroupPage> createState() => _ClassGroupPageState();
+}
+
+class _ClassGroupPageState extends State<ClassGroupPage> {
+  @override
+  void initState() {
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<ClassGroupPageState>().classGroups.isEmpty
+          ? context.read<ClassGroupPageState>().getClassGroups()
+          : null;
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = Provider.of<ClassGroupPageState>(context);
     return Padding(
       padding: const EdgeInsets.all(defaultMainPad),
       child: SingleChildScrollView(
@@ -20,70 +42,56 @@ class ClassGroupPage extends StatelessWidget {
               height: 20,
             ),
             Center(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * .8,
-                width: MediaQuery.of(context).size.width * .8,
-                child: Column(
-                  spacing: defaultInnerPad,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: 300,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Pesquisar...',
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        FiltroRadio()
-                      ],
-                    ),
-                    Expanded(
-                      child: GridView.builder(
-                          shrinkWrap: true,
-                          itemCount: 10,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 10,
-                          ),
-                          itemBuilder: (context, index) => Container(
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 2,
-                                      offset: const Offset(0, 3),
+              child: state.loadingState == LoadingState.LOADING
+                  ? CircularProgressIndicator(color: primaryColor)
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height * .8,
+                      width: MediaQuery.of(context).size.width * .8,
+                      child: Column(
+                        spacing: defaultInnerPad,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                  onPressed: () => state.getClassGroups(),
+                                  child: const Text('Recarregar turmas')),
+                              const Spacer(),
+                              const SizedBox(
+                                width: 300,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    hintText: 'Pesquisar...',
+                                    prefixIcon: Icon(Icons.search),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
                                     ),
-                                  ],
-                                  color: const Color.fromRGBO(33, 150, 243, 1),
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Turma ${index + 101}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall,
                                   ),
                                 ),
-                              )),
+                              ),
+                              FiltroRadio(onChanged: (value) {
+                                state.filterClassGroups(value);
+                              }),
+                            ],
+                          ),
+                          Expanded(
+                            child: GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: state.viewClassGroups.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4,
+                                  crossAxisSpacing: 5,
+                                  mainAxisSpacing: 10,
+                                ),
+                                itemBuilder: (context, index) => ClassGroupCard(
+                                    state.viewClassGroups[index])),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
             ),
           ],
         ),
@@ -93,39 +101,69 @@ class ClassGroupPage extends StatelessWidget {
 }
 
 class FiltroRadio extends StatefulWidget {
-  const FiltroRadio({super.key});
+  const FiltroRadio({super.key, required this.onChanged});
+
+  final Function(String?) onChanged;
 
   @override
-  _FiltroRadioState createState() => _FiltroRadioState();
+  FiltroRadioState createState() => FiltroRadioState();
 }
 
-class _FiltroRadioState extends State<FiltroRadio> {
-  String _selectedValue = 'fundamental';
+class FiltroRadioState extends State<FiltroRadio> {
+  String _selectedValue = 'ALL';
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Radio<String>(
-          value: 'fundamental',
-          groupValue: _selectedValue,
-          onChanged: (value) {
-            setState(() {
-              _selectedValue = value!;
-            });
-          },
+        Row(
+          children: [
+            Radio<String>(
+              value: 'ALL',
+              groupValue: _selectedValue,
+              onChanged: (value) {
+                setState(() {
+                  _selectedValue = value!;
+                  widget.onChanged(value);
+                });
+              },
+            ),
+            const Text('Todos'),
+          ],
         ),
-        const Text('Fundamental'),
-        Radio<String>(
-          value: 'creche',
-          groupValue: _selectedValue,
-          onChanged: (value) {
-            setState(() {
-              _selectedValue = value!;
-            });
-          },
+        Row(
+          children: [
+            Radio<String>(
+              value: 'ELEMENTARY',
+              groupValue: _selectedValue,
+              onChanged: (value) {
+                setState(
+                  () {
+                    _selectedValue = value!;
+                    widget.onChanged(value);
+                  },
+                );
+              },
+            ),
+            const Text('Fundamental'),
+          ],
         ),
-        const Text('Creche'),
+        Row(
+          children: [
+            Radio<String>(
+              value: 'CRECHE',
+              groupValue: _selectedValue,
+              onChanged: (value) {
+                setState(() {
+                  _selectedValue = value!;
+                  widget.onChanged(value);
+                });
+              },
+            ),
+            const Text('Creche'),
+          ],
+        ),
       ],
     );
   }

@@ -32,8 +32,20 @@ class StudentRepositoryImpl implements StudentRepository {
     return _studentDataSource.countStudent();
   }
 
-    @override
+  @override
   Future<int> countDebts() {
     return _studentDataSource.countDebts();
+  }
+
+  @override
+  Future<List<StudentEntity>> getStudentsByClassGroup(int id) {
+    return _studentDataSource
+        .getStudentsByClassGroup(id)
+        .then((e) => e.map((e) => _inConverter.convert(e)).toList());
+  }
+  
+  @override
+  Future<void> updateStudentClass(int id, int classId) {
+     return _studentDataSource.updateStudentClass(id, classId);
   }
 }
