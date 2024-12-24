@@ -1,7 +1,5 @@
 import 'package:edusys_client/domain/entities/class_group_entity.dart';
-import 'package:edusys_client/domain/entities/student_entity.dart';
 import 'package:edusys_client/presentation/class_group/details/class_group_details_state.dart';
-import 'package:edusys_client/presentation/class_group/details/dialogs/student_edit_class_dialog.dart';
 import 'package:edusys_client/presentation/class_group/details/widgets/student_details_tile.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/loading_state.dart';
@@ -47,11 +45,68 @@ class _ClassGroupDetailsPageState extends State<ClassGroupDetailsPage> {
                       widget.classGroup.name,
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
-                    const Row(
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // lista de estudantes daquela classe
-                        StudentByClassList()
+                        const StudentByClassList(),
                         // detalhes da classe
+                        Padding(
+                          padding: const EdgeInsets.all(defaultMainPad * 2.3),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Sala:',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              Text(widget.classGroup.room,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(color: neutralColor)),
+                              const SizedBox(height: defaultInnerPad),
+                              Text(
+                                'Período:',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              Text(widget.classGroup.timePeriod.value,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(color: neutralColor)),
+                              const SizedBox(height: defaultInnerPad),
+                              Text('Capacidade:',
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
+                              Text(widget.classGroup.capacity.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(color: neutralColor)),
+                              const SizedBox(height: defaultInnerPad),
+                              Text(
+                                'Ano:',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              Text(widget.classGroup.year,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(color: neutralColor)),
+                              const SizedBox(height: defaultInnerPad),
+                              Text(
+                                'Tipo:',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              Text(widget.classGroup.type.value,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(color: neutralColor)),
+                            ],
+                          ),
+                        ),
                       ],
                     )
                   ],
@@ -66,7 +121,6 @@ class StudentByClassList extends StatelessWidget {
   const StudentByClassList({
     super.key,
   });
-
 
   @override
   Widget build(BuildContext context) {
