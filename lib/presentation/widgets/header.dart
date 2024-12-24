@@ -44,7 +44,7 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
         TextButton(
           onPressed: () {
-            if (guardianState.guardians.isEmpty) {
+              if (guardianState.guardians.isEmpty) {
               try {
                 guardianState.loadGuardians();
                 context.go('/guardian');

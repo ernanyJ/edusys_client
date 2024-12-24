@@ -60,10 +60,7 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: 'details/:id',
-              builder: (context, state) => ChangeNotifierProvider(
-                  create: (context) => ClassGroupDetailsState(),
-                  child:
-                      ClassGroupDetailsPage(state.extra as ClassGroupEntity)),
+              builder: (context, state) => ClassGroupDetailsPage(state.extra as ClassGroupEntity),
             )
           ],
         ),

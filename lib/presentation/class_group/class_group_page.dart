@@ -17,9 +17,9 @@ class _ClassGroupPageState extends State<ClassGroupPage> {
   void initState() {
     Future.microtask(() {
       if (!mounted) return;
-      context.read<ClassGroupPageState>().classGroups.isEmpty
-          ? context.read<ClassGroupPageState>().getClassGroups()
-          : null;
+      if (context.read<ClassGroupPageState>().classGroups.isEmpty) {
+        context.read<ClassGroupPageState>().getClassGroups();
+      }
     });
 
     super.initState();

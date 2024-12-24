@@ -52,5 +52,5 @@ class AddContractPageState extends ChangeNotifier {
 
     // save contractw
     repository.addContract(contract);
-  }
+  } 
 }

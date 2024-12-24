@@ -1,12 +1,11 @@
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:edusys_client/core/config/config_entity.dart';
 import 'package:edusys_client/core/formaters.dart';
 import 'package:edusys_client/data/models/out/address_model_out.dart';
 import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/domain/entities/student_entity.dart';
 import 'package:edusys_client/enums/sex_enum.dart';
 import 'package:edusys_client/presentation/class_group/details/class_group_details_state.dart';
-import 'package:edusys_client/presentation/class_group/details/dialogs/student_edit_class_dialog_state.dart';
+import 'package:edusys_client/presentation/class_group/details/dialogs/widgets/class_movement_dialog.dart';
 import 'package:edusys_client/presentation/student/state/fee_visualizer_state.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
 import 'package:edusys_client/presentation/student/state/student_text_controller.dart';
@@ -36,6 +35,7 @@ class _ClassGroupDetailsState extends State<StudentEditClassDialog> {
   @override
   Widget build(BuildContext context) {
     var state = Provider.of<StudentPageState>(context);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -49,6 +49,7 @@ class _ClassGroupDetailsState extends State<StudentEditClassDialog> {
       ],
       child: Builder(builder: (context) {
         final textController = Provider.of<StudentTextController>(context);
+
         return AlertDialog(
           icon: Row(
             children: [
@@ -297,139 +298,16 @@ class ChangeClassGroupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+            var state = Provider.of<ClassGroupDetailsState>(context)..getClassGroups();
+
     return ElevatedButton(
       onPressed: () {
         showDialog(
-            context: context,
-            builder: (context) {
-              return ChangeNotifierProvider(
-                create: (context) => ClassGroupDetailsState()..getClassGroups(),
-                child: Builder(builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Movimentação de turma'),
-                    content: Column(
-                      spacing: defaultInnerPad,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(height: defaultMainPad),
-                        Text(
-                          'Ao mover o estudante de turma, ele será removido da turma atual e adicionado a uma nova turma.',
-                          style:
-                              Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    color: dangerColor,
-                                  ),
-                        ),
-
-                        // drop down
-                        Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: [
-                              const Text('Selecione a nova turma:'),
-                              DropdownButton<String>(
-                                value: context
-                                    .watch<ClassGroupDetailsState>()
-                                    .selectedClass,
-                                alignment: Alignment.centerRight,
-                                items: [
-                                  ...context
-                                      .watch<ClassGroupDetailsState>()
-                                      .classes
-                                      .map((e) => DropdownMenuItem(
-                                            value: e.id.toString(),
-                                            child: Text(e.name),
-                                          ))
-                                ],
-                                onChanged: (value) {
-                                  context
-                                      .read<ClassGroupDetailsState>()
-                                      .setSelectedClass(value);
-                                },
-                              ),
-                              Visibility(
-                                  visible: context
-                                          .watch<ClassGroupDetailsState>()
-                                          .selectedClass ==
-                                      null,
-                                  child: Text('Selecione uma turma.',
-                                      style: TextStyle(color: dangerColor))),
-                            ],
-                          ),
-                        ),
-                        Form(
-                          key: context
-                              .read<ClassGroupDetailsState>()
-                              .moveStudentClassGroupKey,
-                          child: Column(
-                            children: [
-                              MyTextField(
-                                validation: (p0) => p0 == null || p0.isEmpty
-                                    ? 'Justificativa é obrigatória'
-                                    : null,
-                                label: 'Justificativa *',
-                                controller: context
-                                    .read<ClassGroupDetailsState>()
-                                    .justifyController,
-                              ),
-                              Visibility(
-                                visible: ConfigSingleton.getInstance()
-                                    .askPasswordForClassChange,
-                                child: MyTextField(
-                                  validation: (value) {
-                                    var config = ConfigSingleton.getInstance();
-
-                                    if (config.askPasswordForClassChange &&
-                                        value != config.securityPassword) {
-                                      return 'Senha incorreta';
-                                    }
-                                    return null;
-                                  },
-                                  label: 'Senha *',
-                                  controller: context
-                                      .read<ClassGroupDetailsState>()
-                                      .askPasswordController,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Cancelar'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          onPressed();
-
-                          try {
-                            context
-                                .read<ClassGroupDetailsState>()
-                                .moveStudentClassGroup(student.id);
-
-                            context
-                                .read<ClassGroupDetailsState>().removeStudent(student.id);
-
-                            Navigator.of(context).pop();
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Erro ao mover aluno de turma: $e'),
-                              backgroundColor: dangerColor,
-                            ));
-                          }
-                        },
-                        child: const Text('Concluir'),
-                      ),
-                    ],
-                  );
-                }),
-              );
-            });
+          context: context,
+          builder: (context) {
+            return ClassMovementDialog(state: state, onPressed: onPressed, student: student);
+          },
+        ).then((v) => state.clearMoveStudentDialogData());
       },
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.all<Color>(dangerColor),
@@ -438,29 +316,6 @@ class ChangeClassGroupButton extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         child: Text('Mover de turma',
             style: Theme.of(context).textTheme.labelSmall),
-      ),
-    );
-  }
-}
-
-class EditButton extends StatelessWidget {
-  const EditButton(
-    this.onPressed, {
-    super.key,
-  });
-
-  final void Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => onPressed(),
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all<Color>(primaryColor),
-      ),
-      child: Text(
-        'Salvar alterações',
-        style: Theme.of(context).textTheme.labelSmall,
       ),
     );
   }

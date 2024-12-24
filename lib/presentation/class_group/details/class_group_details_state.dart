@@ -6,7 +6,7 @@ import 'package:edusys_client/exceptions/invalid_input.dart';
 import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
 
-class ClassGroupDetailsState extends ChangeNotifier {
+class   ClassGroupDetailsState extends ChangeNotifier {
   void init(int id) {
     getStudentsByClassGroup(id);
   }
@@ -73,6 +73,8 @@ class ClassGroupDetailsState extends ChangeNotifier {
           studentId,
           int.parse(selectedClass!),
         );
+
+        removeStudent(studentId);
       } catch (e) {
         throw InvalidInput('Erro ao mover aluno de turma.');
       }
@@ -81,6 +83,13 @@ class ClassGroupDetailsState extends ChangeNotifier {
 
   void removeStudent(int id) {
     filteredStudents.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+
+   void clearMoveStudentDialogData() {
+    askPasswordController.clear();
+    justifyController.clear();
+    selectedClass = null;
     notifyListeners();
   }
 }

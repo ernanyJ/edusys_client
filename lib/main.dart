@@ -1,3 +1,4 @@
+import 'package:edusys_client/presentation/class_group/details/class_group_details_state.dart';
 import 'package:edusys_client/presentation/contract/contract_page_state.dart';
 import 'package:edusys_client/presentation/contract/widgets/guardian_add/add_guardian_state.dart';
 import 'package:edusys_client/presentation/contract/widgets/student_add/create_student_dialog_state.dart';
@@ -27,6 +28,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ContractPageState()),
         ChangeNotifierProvider(create: (_) => CreateStudentDialogState()),
         ChangeNotifierProvider(create: (_) => AddGuardianState()),
+        ChangeNotifierProvider(create: (_) => ClassGroupDetailsState())
       ],
       child: MaterialApp.router(
         routerConfig: appRouter,
