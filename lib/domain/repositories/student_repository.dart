@@ -15,4 +15,6 @@ abstract interface class StudentRepository {
   Future<List<StudentEntity>> getStudentsByClassGroup(int id);
 
   Future<void> updateStudentClass(int id, int classId);
+
+  Future<List<StudentEntity>> searchStudentsByQuery(String query);
 }

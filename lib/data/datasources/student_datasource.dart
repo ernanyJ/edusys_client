@@ -17,6 +17,19 @@ class StudentDatasource extends BaseDatasource {
     }
   }
 
+  Future<List<StudentModelIn>> searchStudentsByQuery(String query) async {
+    try {
+      final response =
+          await dio.get('/student/search', queryParameters: {'query': query});
+      return (response.data as List)
+          .map((e) => StudentModelIn.fromJson(e))
+          .toList();
+    } on DioException catch (e) {
+      // Trata erros de forma específica
+      throw Exception('Failed to search students: ${e.message}');
+    }
+  }
+
   Future<void> deleteStudent(int id) async {
     try {
       await dio.delete('/student/$id');

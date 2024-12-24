@@ -2,6 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
 import 'package:edusys_client/presentation/student/widgets/count_card.dart';
 import 'package:edusys_client/presentation/student/widgets/students_details_dialog.dart';
+import 'package:edusys_client/presentation/widgets/my_search_field.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/hover_builder.dart';
 import 'package:edusys_client/util/loading_state.dart';
@@ -34,6 +35,7 @@ class _StudentsPageState extends State<StudentsPage> {
                 child: CircularProgressIndicator(color: primaryColor),
               )
             : Column(
+              spacing: 4,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -49,16 +51,26 @@ class _StudentsPageState extends State<StudentsPage> {
                           info: state.studentDebtCount.toString()),
                     ],
                   ),
+                  const SizedBox(height: 8),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      SizedBox(
+                        width: 600,
+                        child: MySearchField(
+                          hint: 'Pesquisar por nome, CPF, matrícula, RG...',
+                          onChanged: (query) => {
+                            state.searchStudentsByQuery(query)
+                          },
+                        ),
+                      ),
                       TextButton(
                         onPressed: () => state.reloadStudents(context),
                         child: const Text('Recarregar lista'),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: state.loadingState == LoadingState.LOADING
                         ? const Center(
@@ -181,7 +193,8 @@ class _StudentsPageState extends State<StudentsPage> {
                                         },
                                       ),
                                     ),
-                                    DataCell(Text(student.classGroup?.room ?? 'Não atribuído')),
+                                    DataCell(Text(student.classGroup?.room ??
+                                        'Não atribuído')),
                                     DataCell(Text(
                                       student.currentMonthPaid?.value ??
                                           'Não possui',

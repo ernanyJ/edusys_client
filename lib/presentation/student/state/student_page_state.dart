@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/data/repositories/student_repository_impl.dart';
 import 'package:edusys_client/domain/entities/address_entity.dart';
@@ -217,5 +219,17 @@ class StudentPageState extends ChangeNotifier {
       rethrow;
     }
     notifyListeners();
+  }
+
+  Timer? _debounce;
+
+  searchStudentsByQuery(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      repository.searchStudentsByQuery(query).then((value) {
+        students = value;
+        notifyListeners();
+      });
+    });
   }
 }

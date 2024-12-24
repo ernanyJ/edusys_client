@@ -1,6 +1,7 @@
 import 'package:edusys_client/domain/entities/class_group_entity.dart';
 import 'package:edusys_client/presentation/class_group/details/class_group_details_state.dart';
 import 'package:edusys_client/presentation/class_group/details/widgets/student_details_tile.dart';
+import 'package:edusys_client/presentation/widgets/my_search_field.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:edusys_client/util/loading_state.dart';
 import 'package:flutter/material.dart';
@@ -131,17 +132,8 @@ class StudentByClassList extends StatelessWidget {
       children: [
         SizedBox(
           width: 300,
-          child: TextField(
-            onChanged: (value) {
-              state.searchStudentsByName(value);
-            },
-            decoration: const InputDecoration(
-              hintText: 'Pesquisar...',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              ),
-            ),
+          child: MySearchField(
+            onChanged: (value) => state.searchStudentsByName(value),
           ),
         ),
         Container(

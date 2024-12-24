@@ -48,4 +48,11 @@ class StudentRepositoryImpl implements StudentRepository {
   Future<void> updateStudentClass(int id, int classId) {
      return _studentDataSource.updateStudentClass(id, classId);
   }
+  
+  @override
+  Future<List<StudentEntity>> searchStudentsByQuery(String query) {
+    return _studentDataSource
+        .searchStudentsByQuery(query)
+        .then((e) => e.map((e) => _inConverter.convert(e)).toList());
+  }
 }
