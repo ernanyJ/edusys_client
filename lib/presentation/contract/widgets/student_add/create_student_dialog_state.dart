@@ -18,11 +18,14 @@ class CreateStudentDialogState extends ChangeNotifier {
   TextEditingController streetController = TextEditingController();
   TextEditingController numberController = TextEditingController();
   TextEditingController neighborhoodController = TextEditingController();
-  TextEditingController cityController = TextEditingController()..text = 'Boa Vista';
-  TextEditingController stateController = TextEditingController()..text = 'Roraima';
+  TextEditingController cityController = TextEditingController()
+    ..text = 'Boa Vista';
+  TextEditingController stateController = TextEditingController()
+    ..text = 'Roraima';
   TextEditingController zipCodeController = TextEditingController();
   TextEditingController complementController = TextEditingController();
-  TextEditingController countryController = TextEditingController()..text = 'Brasil';
+  TextEditingController countryController = TextEditingController()
+    ..text = 'Brasil';
   TextEditingController referenceController = TextEditingController();
 
   late Sex? sex;
@@ -87,8 +90,7 @@ class CreateStudentDialogState extends ChangeNotifier {
         stateController.text.isEmpty ||
         zipCodeController.text.isEmpty ||
         complementController.text.isEmpty ||
-        countryController.text.isEmpty ||
-        referenceController.text.isEmpty) {
+        countryController.text.isEmpty) {
       throw InvalidInput(
           'Preencha os campos são obrigatórios. Campos faltantes: ${getMissingFields()}');
     }
@@ -110,7 +112,6 @@ class CreateStudentDialogState extends ChangeNotifier {
     if (zipCodeController.text.isEmpty) missingFields.add('CEP');
     if (complementController.text.isEmpty) missingFields.add('Complemento');
     if (countryController.text.isEmpty) missingFields.add('País');
-    if (referenceController.text.isEmpty) missingFields.add('Referência');
 
     return missingFields.join(', ');
   }

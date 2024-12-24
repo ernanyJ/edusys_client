@@ -1,5 +1,5 @@
 enum ClassGroupType {
-  ELEMENTARY("Elementar"),
+  ELEMENTARY("Fundamental"),
   CRECHE("Creche");
 
   final String value;

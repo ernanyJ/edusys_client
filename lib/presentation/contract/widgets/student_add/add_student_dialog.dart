@@ -4,6 +4,7 @@ import 'package:edusys_client/exceptions/invalid_input.dart';
 import 'package:edusys_client/presentation/contract/widgets/student_add/create_student_dialog_state.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
 import 'package:edusys_client/presentation/widgets/sex_dropdown.dart';
+import 'package:edusys_client/presentation/widgets/states_dropdown.dart';
 import 'package:edusys_client/util/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -197,10 +198,14 @@ class _AddressData extends StatelessWidget {
                   isRequired: true,
                   label: 'Cidade *',
                   controller: state.cityController),
-              MyTextField(
-                  isRequired: true,
-                  label: 'Estado *',
-                  controller: state.stateController),
+            Column(
+              children: [
+                const SizedBox(height: 31),
+                StatesDropdown(
+                  onChanged: (value) => state.stateController.text = value as String,
+                ),
+              ],
+            ),
               MyTextField(
                 isRequired: true,
                 inputFormatters: [
