@@ -2,7 +2,6 @@ import 'package:edusys_client/domain/entities/class_group_entity.dart';
 import 'package:edusys_client/presentation/class_group/class_group_page.dart';
 import 'package:edusys_client/presentation/class_group/class_group_page_state.dart';
 import 'package:edusys_client/presentation/class_group/details/class_group_details_page.dart';
-import 'package:edusys_client/presentation/class_group/details/class_group_details_state.dart';
 import 'package:edusys_client/presentation/configuration/configuration_page.dart';
 import 'package:edusys_client/presentation/contract/contract_page.dart';
 import 'package:edusys_client/presentation/contract/pages/add_contract/add_contract_page.dart';

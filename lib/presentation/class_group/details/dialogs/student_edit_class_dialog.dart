@@ -10,6 +10,7 @@ import 'package:edusys_client/presentation/student/state/fee_visualizer_state.da
 import 'package:edusys_client/presentation/student/state/student_page_state.dart';
 import 'package:edusys_client/presentation/student/state/student_text_controller.dart';
 import 'package:edusys_client/presentation/student/widgets/fee_visualizer.dart';
+import 'package:edusys_client/presentation/student/widgets/students_details_dialog.dart';
 import 'package:edusys_client/presentation/student/widgets/tuition_status_badge.dart';
 import 'package:edusys_client/presentation/widgets/my_text_field.dart';
 import 'package:edusys_client/util/consts.dart';
@@ -226,9 +227,7 @@ class _ClassGroupDetailsState extends State<StudentEditClassDialog> {
                         ),
                         const SizedBox(width: defaultMainPad),
                         EditButton(() {
-                          state.updateStudent(
-                              widget.student.id,
-                              StudentModelOut(
+                          var cacheStudent =   StudentModelOut(
                                 name: textController.nameController.text,
                                 birthDate: formatDateForApi(
                                     textController.birthController.text),
@@ -255,8 +254,12 @@ class _ClassGroupDetailsState extends State<StudentEditClassDialog> {
                                   reference:
                                       textController.referenceController.text,
                                 ),
-                              ),
+                              );
+                          state.updateStudent(
+                              widget.student.id,
+                            cacheStudent,
                               context);
+                              context.read<ClassGroupDetailsState>().replaceStudent(widget.student.id, cacheStudent);
                           Navigator.of(context).pop();
                         }),
                       ],
@@ -305,7 +308,7 @@ class ChangeClassGroupButton extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) {
-            return ClassMovementDialog(state: state, onPressed: onPressed, student: student);
+            return ClassMovementDialog(onPressed: onPressed, student: student);
           },
         ).then((v) => state.clearMoveStudentDialogData());
       },

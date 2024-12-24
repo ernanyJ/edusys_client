@@ -56,7 +56,7 @@ class _MyTextFieldState extends State<MyTextField> {
               ),
               const SizedBox(width: defaultInnerPad),
               if (widget.actions != null)
-                ...widget.actions!, // todo: ajustar espaçamento
+                ...widget.actions!, // TODO: ajustar espaçamento
               SizedBox(child: widget.helpTip ?? const SizedBox.shrink()),
             ],
           ),
