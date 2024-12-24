@@ -32,8 +32,6 @@ class ClassMovementDialog extends StatelessWidget {
                   color: dangerColor,
                 ),
           ),
-    
-          
           const ClassesDropdownWidget(),
           const FieldsStudentMoveWidget(),
         ],
@@ -48,13 +46,13 @@ class ClassMovementDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             onPressed();
-    
+
             try {
               context
                   .read<ClassGroupDetailsState>()
                   .moveStudentClassGroup(student.id);
 
-    
+              Navigator.of(context).pop();
               Navigator.of(context).pop();
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
