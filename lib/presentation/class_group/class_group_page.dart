@@ -53,6 +53,7 @@ class _ClassGroupPageState extends State<ClassGroupPage> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               TextButton(
                                   onPressed: () => state.getClassGroups(),
