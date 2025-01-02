@@ -36,9 +36,7 @@ class _GuardianPageState extends State<GuardianPage> {
                     child: CircularProgressIndicator(color: primaryColor),
                   )
                 : DataTable2(
-
                     dataRowHeight: 60,
-                    
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.grey, width: 1),

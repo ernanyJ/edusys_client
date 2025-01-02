@@ -1,3 +1,4 @@
+import 'package:edusys_client/core/page_model.dart';
 import 'package:edusys_client/data/datasources/student_datasource.dart';
 import 'package:edusys_client/data/models/out/student_model_out.dart';
 import 'package:edusys_client/domain/converters/student_converter.dart';
@@ -43,16 +44,34 @@ class StudentRepositoryImpl implements StudentRepository {
         .getStudentsByClassGroup(id)
         .then((e) => e.map((e) => _inConverter.convert(e)).toList());
   }
-  
+
   @override
   Future<void> updateStudentClass(int id, int classId) {
-     return _studentDataSource.updateStudentClass(id, classId);
+    return _studentDataSource.updateStudentClass(id, classId);
   }
-  
+
   @override
-  Future<List<StudentEntity>> searchStudentsByQuery(String query) {
+  Future<PageModel<StudentEntity>> searchStudentsByQuery(
+      String query, int page, int size) {
     return _studentDataSource
-        .searchStudentsByQuery(query)
-        .then((e) => e.map((e) => _inConverter.convert(e)).toList());
+        .searchStudentsByQuery(query, page, size)
+        .then((e) => PageModel(
+              content: e.content.map((e) => _inConverter.convert(e)).toList(),
+              totalPages: e.totalPages,
+              totalElements: e.totalElements,
+              currentPage: e.currentPage,
+            ));
+  }
+
+  @override
+  Future<PageModel<StudentEntity>> getStudentsPaginated(int page, int size) {
+    return _studentDataSource
+        .getStudentsPaginated(page, size)
+        .then((e) => PageModel(
+              content: e.content.map((e) => _inConverter.convert(e)).toList(),
+              totalPages: e.totalPages,
+              totalElements: e.totalElements,
+              currentPage: e.currentPage,
+            ));
   }
 }

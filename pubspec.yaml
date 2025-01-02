@@ -15,6 +15,7 @@ dependencies:
   dio: ^5.7.0
   brasil_fields: ^1.15.0
   window_manager: ^0.4.3
+  advanced_datatable: ^0.0.9
 
 dev_dependencies:
   flutter_test:

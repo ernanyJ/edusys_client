@@ -35,7 +35,7 @@ class MainHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
         TextButton(
           onPressed: () {
-            state.students.isEmpty ? state.loadStudents(context) : null;
+            // state.students.isEmpty ? state.loadStudents() : null;
             context.go('/students');
           },
           child: const Text(

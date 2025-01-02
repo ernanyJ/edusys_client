@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:edusys_client/core/page_model.dart';
 import 'package:edusys_client/data/datasources/base_datasource.dart';
 import 'package:edusys_client/data/models/in/student_model_in.dart';
 import 'package:edusys_client/data/models/out/student_model_out.dart';
@@ -17,13 +18,13 @@ class StudentDatasource extends BaseDatasource {
     }
   }
 
-  Future<List<StudentModelIn>> searchStudentsByQuery(String query) async {
+  Future<PageModel<StudentModelIn>> searchStudentsByQuery(
+      String query, int page, int size) async {
     try {
-      final response =
-          await dio.get('/student/search', queryParameters: {'query': query});
-      return (response.data as List)
-          .map((e) => StudentModelIn.fromJson(e))
-          .toList();
+      final response = await dio.get('/student/search',
+          queryParameters: {'query': query, 'page': page, 'size': size});
+      return PageModel.fromJson(
+          response.data, (e) => StudentModelIn.fromJson(e));
     } on DioException catch (e) {
       // Trata erros de forma específica
       throw Exception('Failed to search students: ${e.message}');
@@ -48,6 +49,19 @@ class StudentDatasource extends BaseDatasource {
         throw CpfException('CPF Inválido.');
       }
       throw Exception('Failed to update user: ${e.response}');
+    }
+  }
+
+  Future<PageModel<StudentModelIn>> getStudentsPaginated(
+      int page, int size) async {
+    try {
+      final response = await dio
+          .get('/student/page', queryParameters: {'page': page, 'size': size});
+      return PageModel.fromJson(
+          response.data, (e) => StudentModelIn.fromJson(e));
+    } on DioException catch (e) {
+      // Trata erros de forma específica
+      throw Exception('Failed to fetch user: ${e.message}');
     }
   }
 
